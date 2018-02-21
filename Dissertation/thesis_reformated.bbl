@@ -1,0 +1,414 @@
+\begin{thebibliography}{10}
+
+\bibitem{dreyfuss_2002}
+G.~Dreyfuss, V.~N. Kim, and N.~Kataoka.
+\newblock {Messenger-RNA-binding proteins and the messages they carry}.
+\newblock {\em Nat Rev Mol Cell Biol}, 3(3):195--205, 2002.
+
+\bibitem{drapper_99}
+D.~E. Drapper.
+\newblock {Themes in RNA-protein recognition}.
+\newblock {\em J Mol Biol}, 293(2):255--270, 1999.
+
+\bibitem{zhu_2009}
+D.~Zhu, C.~R. Stumpf, J.~M. Krahn, M.~Wickens, and T.~M. Hall.
+\newblock {A 5' cytosine binding pocket in Puf3p specifies regulation of
+  mitochondrial mRNAs}.
+\newblock {\em Proc Natl Acad Sci USA}, 106(48):20192--20197, 2009.
+
+\bibitem{johnson_2006}
+P.~E. Johnson and L.~W. Donaldson.
+\newblock {RNA recognition by the Vts1p SAM domain}.
+\newblock {\em Nat Struct Mol Biol}, 13(2):177--178, 2006.
+
+\bibitem{rnacompete_09}
+D.~Ray, H.~Kazan, E.~T. Chan, L.~P. Castillo, S.~Chaudhry, S.~Talukder, B.~J.
+  Blencowe, Q.~Morris, and T.~R. Hughes.
+\newblock {Rapid and systematic analysis of the {RNA} recognition specificities
+  of {RNA}-binding proteins}.
+\newblock {\em Nat Biotechnol}, 27(7):667--670, 2009.
+
+\bibitem{ellington_90}
+A.~D. Ellington and J.~W. Szostak.
+\newblock {In vitro selection of RNA molecules that bind specific ligands}.
+\newblock {\em Nature}, 346(6248):818--822, 1990.
+
+\bibitem{ray_2009}
+D.~Ray, H.~Kazan, E.~T. Chan, L.~Peña~Castillo, S.~Chaudhry, S.~Talukder,
+  B.~J. Blencowe, Q.~Morris, and T.~R. Hughes.
+\newblock {Rapid and systematic analysis of the RNA recognition specificities
+  of RNA-binding proteins}.
+\newblock {\em Nat Biotechnol}, 27(7):667--670, 2009.
+
+\bibitem{konig_2012}
+J.~König, K.~Zarnack, N.~M. Luscombe, and J.~Ule.
+\newblock {Protein-RNA interactions: new genomic technologies and
+  perspectives}.
+\newblock {\em Nat Rev Genet}, 13(2):77--83, 2012.
+
+\bibitem{keene_06}
+JD~Keene, JM~Komisarow, and MB~Friedersdorf.
+\newblock {RIP-Chip: the isolation and identification of mRNAs, microRNAs and
+  protein components of ribonucleoprotein complexes from cell extracts}.
+\newblock {\em Nature Prot.}, 1(1):302--307, 06 2006.
+
+\bibitem{zhao_10}
+J.~Zhao, T.~K. Ohsumi, J.~T. Kung, Y.~Ogawa, D.~J. Grau, K.~Sarma, J.~J. Song,
+  R.~E. Kingston, M.~Borowsky, and J.~T. Lee.
+\newblock {Genome-wide identification of polycomb-associated RNAs by RIP-seq}.
+\newblock {\em Mol cell}, 40(6):939--953, 12 2010.
+\newblock [PubMed:\href{http://www.ncbi.nlm.nih.gov/pubmed/21172659}{21172659}]
+  [PubMed
+  Central:\href{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3021903}{PMC3021903}]
+  [doi:\href{http://dx.doi.org/10.1016/j.molcel.2010.12.011}{10.1016/j.molcel.2010.12.011}].
+
+\bibitem{mili_2004}
+S.~Mili and J.~A. Steitz.
+\newblock {Evidence for reassociation of RNA-binding proteins after cell lysis:
+  implications for the interpretation of immunoprecipitation analyses}.
+\newblock {\em RNA}, 10(11):1692--1694, 2004.
+
+\bibitem{ule_05}
+J.~Ule, K.~Jensen, A.~Mele, and R.~B. Darnell.
+\newblock {CLIP:A method for identifying protein-RNA interaction sites in
+  living cells}.
+\newblock {\em Methods}, 37:376--386, 2005.
+
+\bibitem{hafner_10}
+M.~Hafner, M.~Landthaler, L.~Burger, M.~Khorshid, J.~Hausser, P.~Berninger,
+  A.~Rothballer, M.~Ascano, A.~C. Jungkamp, M.~Munschauer, A.~Ulrich, G.~S.
+  Wardle, S.~Dewell, M.~Zavolan, and T.~Tuschl.
+\newblock {Transcriptome-wide identification of RNA-binding protein and
+  microRNA target sites by PAR-CLIP}.
+\newblock {\em Cell}, 141(1):129--141, 2010.
+
+\bibitem{baltz_12}
+A.~G. Baltz, M.~Munschauer, B.~Schwanhäusser, A.~Vasile, Y.~Murakawa,
+  M.~Schueler, N.~Youngs, D.~Penfold-Brown, K.~Drew, M.~Milek, E.~Wyler,
+  R.~Bonneau, M.~Selbach, C.~Dieterich, and M.~Landthaler.
+\newblock {The mRNA-bound proteome and its global occupancy profile on
+  protein-coding transcripts}.
+\newblock {\em Mol Cell}, 46:674--690, 2012.
+
+\bibitem{bailey_06}
+T.~L. Bailey, N.~Williams, C.~Misleh, and W.~W. Li.
+\newblock {MEME}: Discovering and analyzing {DNA} and protein sequence motifs.
+\newblock {\em Nucleic Acids Res}, 34:W369--W373, 2006.
+\newblock [PubMed:\href{http://www.ncbi.nlm.nih.gov/pubmed/16845028}{16845028}]
+  [PubMed
+  Central:\href{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1538909}{PMC1538909}]
+  [doi:\href{http://dx.doi.org/10.1093/nar/gkl198}{10.1093/nar/gkl198}].
+
+\bibitem{heinz_2010}
+S.~Heinz, C.~Benner, N.~Spann, E.~Bertolino, Y.~C. Lin, P.~Laslo, J.~X. Cheng,
+  C.~Murre, H.~Singh, and C.~K. Glass.
+\newblock {Simple combinations of lineage-determining transcription factors
+  prime cis-regulatory elements required for macrophage and B cell identities}.
+\newblock {\em Mol Cell}, 38(4):576--589, 2010.
+
+\bibitem{kazan_10}
+H.~Kazan, D.~Ray, E.~T. Chan, T.~R. Hughes, and Q.~Morris.
+\newblock {RNAcontext: A new method for learning the sequence and structure
+  binding preferences of RNA-binding proteins}.
+\newblock {\em PLoS Comp Biol}, 6(7):e1000832, 2010.
+
+\bibitem{hiller_06}
+M.~Hiller, R.~Pudimat, A.~Busch, and R.~Backofen.
+\newblock Using {RNA} secondary structures to guide sequence motif finding
+  towards single-stranded regions.
+\newblock {\em Nucleic Acids Res}, 34(17):e117, 2006.
+\newblock [PubMed:\href{http://www.ncbi.nlm.nih.gov/pubmed/16987907}{16987907}]
+  [PubMed
+  Central:\href{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1903381}{PMC1903381}]
+  [doi:\href{http://dx.doi.org/10.1093/nar/gkl544}{10.1093/nar/gkl544}].
+
+\bibitem{maticzka_14}
+D.~Maticzka, S.~J. Lange, F.~Costa, and R.~Backofen.
+\newblock {GraphProt: modeling binding preferences of RNA-binding proteins}.
+\newblock {\em Genome Biol}, 15(1):R:17, 2014.
+
+\bibitem{pancaldi_2012}
+V.~Pancaldi, O.~S. Saraç, C.~Rallis, J.~R. McLean, M.~Převorovský, K.~Gould,
+  A.~Beyer, and J.~Bähler.
+\newblock Predicting the fission yeast protein interaction network.
+\newblock {\em G3}, 2(4):453--467, 2012.
+
+\bibitem{muppirala_2011}
+U.~K. Muppirala, V.~G. Honavar, and D.~Dobbs.
+\newblock {Predicting RNA-protein interactions using only sequence
+  information}.
+\newblock {\em BMC Bioinformatics}, 12:489, 2011.
+
+\bibitem{bartel_2009}
+D.~P. Bartel.
+\newblock {MicroRNAs: target recognition and regulatory functions}.
+\newblock {\em Cell}, 136(2):215--233, 2009.
+
+\bibitem{lee_1993}
+R.~C. Lee, R.~L. Feinbaum, and V.~Ambros.
+\newblock {The C. elegans heterochronic gene lin-4 encodes small RNAs with
+  antisense complementarity to lin-14}.
+\newblock {\em Cell}, 75(5):843--854, 1993.
+
+\bibitem{karginov_2007}
+F.~V. Karginov, C.~Conaco, Z.~Xuan, B.~H. Schmidt, J.~S. Parker, G.~Mandel, and
+  G.~J. Hannon.
+\newblock {A biochemical approach to identifying microRNA targets}.
+\newblock {\em Proc Natl Acad Sci USA}, 104(49):19291--19296, 2007.
+
+\bibitem{mirtarbase}
+S.~D. Hsu, Y.~T. Tseng, S.~Shrestha, Y.~L. Lin, A.~Khaleel, C.~H. Chou, C.~F.
+  Chu, H.~Y. Huang, C.~M. Lin, S.~Y. Ho, T.~Y. Jian, F.~M. Lin, T.~H. Chang,
+  S.~L. Weng, K.~W. Liao, I.~E. Liao, C.~C. Liu, and H.~D. Huang.
+\newblock mirtarbase update 2014: an information resource for experimentally
+  validated mirna-target interactions.
+\newblock {\em Nucleic Acids Res.}, 42:D78--85, 2014.
+
+\bibitem{targetscan_05}
+B.~P. Lewis, C.~B. Burge, and D.~P. Bartel.
+\newblock {Conserved seed pairing, often flanked by adenosines, indicates that
+  thousands of human genes are microRNA targets}.
+\newblock {\em Cell}, 120:15--20, 2005.
+
+\bibitem{pictar_05}
+A.~Krek, D.~Grun, M.~N. Poy, R.~Wolf, L.~Rosenberg, E.~J. Epstein,
+  P.~MacMenamin, I.~Piedade, K.~C. Gunsalus, M.~Stoffel, and N.~Rajewsky.
+\newblock {Combinatorial microRNA target predictions}.
+\newblock {\em Nat. Genet.}, 37:495--500, 2005.
+
+\bibitem{genmir_2007}
+J.~C. Huang, T.~Babak, T.~W. Corson, G.~Chua, S.~Khan, B.~K. Gallie, T.~R.
+  Hughes, B.~J. Blencowe, B.~J. Frey, and Q.~M. Morris.
+\newblock {Using expression profiling data to identify human microRNA targets}.
+\newblock {\em Nat Methods}, 4(12):1045--1049, 2007.
+
+\bibitem{kertesz_2010}
+M.~Kertesz, Y.~Wan, E.~Mazor, J.~L. Rinn, R.~C. Nutler, H.~Y. Chang, and
+  E.~Segal.
+\newblock {Genome-wide measurement of RNA secondary structure in yeast}.
+\newblock {\em Nature}, 467:103--107, 2010.
+
+\bibitem{FragSeq_2010}
+J.~G. Underwood, A.~V. Uzilov, S.~Katzman, C.~S. Onodera, J.~E. Mainzer, D.~H.
+  Mathews, T.~M. Lowe, S.~R. Salama, and D.~Haussler.
+\newblock {FragSeq: transcriptome-wide RNA structure probing using
+  high-throughput sequencing}.
+\newblock {\em Nat Methods}, 7(12):995--1001, 2010.
+
+\bibitem{SHAPEseq_2011}
+J.~B. Lucks, S.~A. Mortimer, C.~Trapnell, S.~Luo, S.~Aviran, G.~P. Schroth,
+  L.~Pachter, J.~A. Douda, and A.~P. Arkin.
+\newblock {Multiplexed RNA structure characterization with selective
+  2'-hydroxyl acylation analyzed by primer extension sequencing (SHAPE-Seq)}.
+\newblock {\em Proc Natl Acad Sci USA}, 108(27):11063--11068, 2011.
+
+\bibitem{gardner_04}
+PP~Gardner and R~Giegerich.
+\newblock {A comprehensive comparison of comparative RNA structure prediction
+  approaches}.
+\newblock {\em BMC Bioinformatics}, 5:140--158, 2004.
+
+\bibitem{mathews_1999}
+D.~H. Mathews, J.~Sabina, M.~Zuker, and D.~H. Turner.
+\newblock {Expanded sequence dependence of thermodynamic parameters improves
+  prediction of RNA secondary structure}.
+\newblock {\em J Mol Biol}, 288(5):911--940, 1999.
+
+\bibitem{mathews_06}
+DH~Mathews and DH~Turner.
+\newblock {Prediction of RNA secondary structure by free energy minimization}.
+\newblock {\em Curr Opin Struct Biol}, 31(13):270--278, 2006.
+
+\bibitem{lange_12}
+S.~J. Lange, D.~Maticzka, M.~Mohl, J.~N. Gagnon, C.~M. Brown, and R.~Backofen.
+\newblock {Global or local? Predicting secondary structure and accessibility in
+  mRNAs}.
+\newblock {\em Nucleic Acids Res}, 40(12):5215--5226, 2012.
+
+\bibitem{sfold}
+Y.~Ding, C.~Y. Chan, and C.~E. Lawerence.
+\newblock {Sfold web server for statistical folding and rational design of
+  nucleic acids}.
+\newblock {\em Nucleic Acids Res}, 32:135--141, 2004.
+
+\bibitem{andronescu_10}
+M~Andronescu, A~Condon, HH~Hoos, DH~Mathews, and KP~Murphy.
+\newblock {Computational approaches for RNA energy parameter estimation}.
+\newblock {\em RNA}, 16:2304--2318, 2010.
+
+\bibitem{jing_2005}
+Q.~Jinq, S.~Huang, S.~Guth, T.~Zarubin, A.~Motoyama, J.~Chen, F.~Di~Padova,
+  S.~C. Lin, H.~Gram, and J.~Han.
+\newblock {Involvement of microRNA in AU-rich element-mediated mRNA
+  instability}.
+\newblock {\em Cell}, 120(5):623--634, 2005.
+
+\bibitem{kim_2009}
+H.~H. Kim, Y.~Kuwano, S.~Srikantan, E.~K. Lee, J.~L. Martindale, and
+  M.~Gorospe.
+\newblock {HuR recruits let-7/RISC to repress c-Myc expression}.
+\newblock {\em Genes Dev}, 23(15):1743--1748, 2009.
+
+\bibitem{kedde_10}
+M.~Kedde, M.~V. Kouwenhove, W.~Zwart, J.~A.~O. Vrielink, R.~Elkon, and
+  R.~Agami.
+\newblock {A Pumilio-induced RNA structure switch in p27-3′ UTR controls
+  miR-221 and miR-222 accessibility}.
+\newblock {\em Nat Cell Biol}, 12:1014--1020, 2010.
+
+\bibitem{bhattacharyya_2006}
+S.~N. Bhattacharyya, R.~Habermacher, U.~Martine, E.~I. Closs, and
+  W.~Filipowicz.
+\newblock {Relief of microRNA-mediated translational repression in human cells
+  subjected to stress}.
+\newblock {\em Cell}, 125(6):1111--1124, 2006.
+
+\bibitem{young_2012}
+L.~E. Young, A.~E. Moore, L.~Sokol, N.~Meisner-Kober, and D.~A. Dixon.
+\newblock {The mRNA stability factor HuR inhibits microRNA-16 targeting of
+  COX-2}.
+\newblock {\em Mol Cancer Res}, 10(1):167--180, 2012.
+
+\bibitem{mukharjee_11}
+N.~Mukherjee, D.~L. Corcoran, J.~D. Nusbaum, D.~W. Reid, S.~Georgiev,
+  M.~Hafner, M.~Jr. Ascano, T.~Tuschl, U.~Ohler, and J.~D. Keene.
+\newblock {Integrative Regulatory Mapping Indicates that the RNA-Binding
+  Protein HuR Couples Pre-mRNA Processing and mRNA Stability }.
+\newblock {\em Mol. Cell}, 43(3):327 -- 339, 2011.
+
+\bibitem{jiang_13}
+P.~Jiang, M.~Singh, and H.~A. Coller.
+\newblock {Computational assessment of the cooperativity between RNA Binding
+  Proteins and MicroRNAs in transcript decay}.
+\newblock {\em PLoS Comput Biol}, 9:e1003075, 2013.
+
+\bibitem{rnacompete_13}
+D.~Ray, H.~Kazan, K.~B. Cook, M.~T. Weirauch, H.~S. Najafabadi, X.~Li,
+  S.~Gueroussov, M.~Albu, H.~Zheng, and et~al.
+\newblock {A compendium of RNA-binding motifs for decoding gene regulation}.
+\newblock {\em Nature}, 499:172--177, 2013.
+
+\bibitem{rbpdb_11}
+K.~B. Cook, H.~Kazan, K.~Zuberi, Q.~Morris, and T.~R. Hughes.
+\newblock {RBPDB: a database of {RNA}-binding specificities}.
+\newblock {\em Nucleic Acids Res}, 39(suppl 1):D301--D308, 2011.
+
+\bibitem{dorina_11}
+G.~Anders, S.~D. Mackowiak, M.~Jend, J.~Maaskola, A.~Kuntzagk, N.~Rajewsky,
+  M.~Landthaler, and D.~Dieterich.
+\newblock {doRINA: a database of RNA interactions in post-transcriptional
+  regulation}.
+\newblock {\em Nucleic Acids Res}, 40(D1):D180--D186, 2011.
+
+\bibitem{friedersdorf_14}
+M.~B. Friedersdorf and J.~D. Keene.
+\newblock {Advancing the functional utility of PAR-CLIP by quantifying
+  background binding to mRNAs and lncRNAs}.
+\newblock {\em Genome Biol}, 15:R2, 2014.
+
+\bibitem{siepel_05}
+A.~Siepel, G.~Bejerano, J.~S. Pedersen, A.~Hinrichs, M.~Hou, K.~Rosenbloom,
+  H.~Clawson, J.~Spieth, L.~W. Hillier, S.~Richards, G.~M. Weinstock, R.~K.
+  Wilson, R.~A. Gibbs, W.~J. Kent, W.~Miller, and D.~Haussler.
+\newblock {Evolutionarily conserved elements in vertebrate, insect, worm, and
+  yeast genomes}.
+\newblock {\em Genome Res.}, 15:1034--1050, 2005.
+
+\bibitem{lebedeva_11}
+S.~Lebedeva, M.~Jens, K.~Theil, B.~Schwanh\"{a}usser, M.~Selbach,
+  M.~Landthaler, and N.~Rajewsky.
+\newblock {Transcriptome-wide analysis of regulatory interactions of the
+  RNA-Binding protein HuR}.
+\newblock {\em Mol. Cell}, 43(3):340--352, 2011.
+
+\bibitem{zhao_14}
+W.~Zhao, J.~L. Pollack, D.~P. Blagev, N.~Zaitlen, M.~T. McManus, and D.~J.
+  Erle.
+\newblock {Massively parallel functional annotation of 3' untranslated
+  regions}.
+\newblock {\em Nat. Biotechnol.}, 32(4):387--391, 2014.
+
+\bibitem{schueler_14}
+M.~Schueler, M.~Munschauer, L.~H. Gregersen, A.~Finzel, A.~Loewer, W.~Chen,
+  M.~Lanthaler, and C.~Dieterich.
+\newblock {Differential protein occupancy profiling of the mRNA transcriptome}.
+\newblock {\em Genome Biol.}, 15(1):R15, 2014.
+
+\bibitem{proteinatlas}
+{Human Protein Atlas}.
+\newblock \url{http://www.proteinatlas.org}.
+\newblock Accessed: 2014-12-30.
+
+\bibitem{anbalagan_14}
+D.~Anbalagan, G.~Yap, Y.~Yuan, V.~K. Pandey, W.~H. Lau, S.~Arora, P.~Bist,
+  J.~S. Wong, G.~Sethi, P.~M. Nissom, P.~E. Lobie, and L.~H. Lim.
+\newblock {Annexin-A1 regulates microRNA-26b* and microRNA-562 to directly
+  target NF-κB and angiogenesis in breast cancer cells}.
+\newblock {\em PLoS One}, 9(12), 2014.
+
+\bibitem{synergizer}
+G.~F. Berriz and F.~P. Roth.
+\newblock The synergizer service for translating gene, protein and other
+  biological identifiers.
+\newblock {\em Bioinformatics}, 24(19):2272--2273, 2008.
+
+\bibitem{RNAplfold}
+S.~H. Bernhart, I.~L. Hofacker, and P.~F. Stadler.
+\newblock {Local RNA base pairing probabilities in large sequences}.
+\newblock {\em Bioinformatics}, 22:614--615, 2006.
+
+\bibitem{qvalue}
+J.~D. Storey and R.~Tibshirani.
+\newblock {Statistical significance for genomewide studies}.
+\newblock {\em Proc Natl Acad Sci U S A}, 100:9440--9445, 2003.
+
+\bibitem{glmnet}
+J.~Friedman, R.~Tibshirani, and T.~Hastie.
+\newblock {Regularization paths for generalized linear models via coordinate
+  descent}.
+\newblock {\em J Stat Softw}, 33:1--22, 2010.
+
+\bibitem{hur_accessibility}
+N.~C. Meisner, J.~Hackermuller, V.~Uhl, A.~Aszodi, M.~Jaritz, and M.~Auer.
+\newblock {mRNA openers and closers: modulating AU-rich element-controlled mRNA
+  stability by a molecular switch in mRNA secondary structure}.
+\newblock {\em Chembiochem}, 5:1432--1447, 2004.
+
+\bibitem{wang_02}
+X.~Wang, J.~McLachlan, P.~D. Zamore, and T.~M.~T. Hall.
+\newblock {Modular Recognition of RNA by a Human Pumilio-Homology Domain}.
+\newblock {\em Cell}, 110(4):501--512, 2002.
+
+\bibitem{teplova_2013}
+M.~Teplova, M.~Hafner, D.~Teplov, K.~Essig, T.~Tuschl, and D.~J. Patel.
+\newblock {Structure–function studies of STAR family Quaking proteins bound
+  to their in vivo RNA target sites}.
+\newblock {\em Genes Dev}, 27(8):928--940, 2013.
+
+\bibitem{weirauch_13}
+M.~T. Weirauch, A.~T. Cote, R.~Norel, M.~Annala, Y.~Zhao, T.~R. Riley,
+  J.~Saez-Rodriguez, T.~Cokelaer, A.~Vedenko, S.~Talukder, and et~al.
+\newblock Evaluation of methods for modeling the transcription factor sequence
+  specificity.
+\newblock {\em Nat Biotech}, 31(2):126--134, 2013.
+
+\bibitem{rouskin_14}
+S.~Rouskin, M.~Zubradt, S.~Washietl, M.~Kellis, and J.~S. Weissman.
+\newblock {Genome-wide probing of RNA structure reveals active unfolding of
+  mRNA structures in vivo}.
+\newblock {\em Nature}, 505:701--705, 2014.
+
+\bibitem{wan_14}
+Y.~Wan, K.~Qu, Q.~C. Zhang, R.~A. Flynn, O.~Manor, Z.~Ouyang, J.~Zhang, R.~C.
+  Spitale, M.~P. Snyder, E.~Segal, and H.~Y. Chang.
+\newblock Landscape and variation of rna secondary structure across the human
+  transcriptome.
+\newblock {\em Nature}, 505:706--709, 2014.
+
+\bibitem{spitale_15}
+R.~C. Spitale, R.~A. Flynn, Q.~C. Zhang, P.~Crisalli, B.~Lee, J.~Jung, H.~Y.
+  Kuchelmeister, P.~J. Batista, E.~A. Torre, E.~T. Kool, and H.~Y. Chang.
+\newblock Structural imprints in vivo decode rna regulatory mechanisms.
+\newblock {\em Nature}, 519:486--490, 2015.
+
+\end{thebibliography}
