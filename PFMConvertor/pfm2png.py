@@ -51,6 +51,7 @@ def parser_init():
 
 
 def read_input_pfm():
+    """Read PFM image into Numpy Array"""
     global image
     if file_format(parsed_input.pfm_file_path) != 'PFM':
         raise Exception('Input type is not PFM')
@@ -58,20 +59,24 @@ def read_input_pfm():
 
 
 def write_output_png():
+    """Writes Numpy Array to PNG image."""
     if file_format(parsed_input.png_file_path) != 'PNG':
         raise Exception('Output type is not PNG')
     plt.imsave(parsed_input.png_file_path, image, cmap=color_map())
 
 
 def color_map():
+    """Returning color map name"""
     return 'jet' if parsed_input.is_color_coded else 'gist_gray'
 
 
 def file_format(image_path):
+    """Returning File's Format"""
     return str(image_path).split('.')[-1].upper()
 
 
 def reporter():
+    """Simple Report"""
     if not parsed_input.is_verbose:
         return
     print('Converting PFM to PNG ...')
