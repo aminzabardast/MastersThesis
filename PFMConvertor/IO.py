@@ -11,23 +11,23 @@ import sys
 
 
 def read(file):
-    if file.endswith('.float3'): return readFloat(file)
-    elif file.endswith('.flo'): return readFlow(file)
-    elif file.endswith('.ppm'): return readImage(file)
-    elif file.endswith('.pgm'): return readImage(file)
-    elif file.endswith('.png'): return readImage(file)
-    elif file.endswith('.jpg'): return readImage(file)
-    elif file.endswith('.pfm'): return readPFM(file)[0]
+    if file.lower().endswith('.float3'): return readFloat(file)
+    elif file.lower().endswith('.flo'): return readFlow(file)
+    elif file.lower().endswith('.ppm'): return readImage(file)
+    elif file.lower().endswith('.pgm'): return readImage(file)
+    elif file.lower().endswith('.png'): return readImage(file)
+    elif file.lower().endswith('.jpg'): return readImage(file)
+    elif file.lower().endswith('.pfm'): return readPFM(file)[0]
     else: raise Exception('don\'t know how to read %s' % file)
 
 def write(file, data):
-    if file.endswith('.float3'): return writeFloat(file, data)
-    elif file.endswith('.flo'): return writeFlow(file, data)
-    elif file.endswith('.ppm'): return writeImage(file, data)
-    elif file.endswith('.pgm'): return writeImage(file, data)
-    elif file.endswith('.png'): return writeImage(file, data)
-    elif file.endswith('.jpg'): return writeImage(file, data)
-    elif file.endswith('.pfm'): return writePFM(file, data)
+    if file.lower().endswith('.float3'): return writeFloat(file, data)
+    elif file.lower().endswith('.flo'): return writeFlow(file, data)
+    elif file.lower().endswith('.ppm'): return writeImage(file, data)
+    elif file.lower().endswith('.pgm'): return writeImage(file, data)
+    elif file.lower().endswith('.png'): return writeImage(file, data)
+    elif file.lower().endswith('.jpg'): return writeImage(file, data)
+    elif file.lower().endswith('.pfm'): return writePFM(file, data)
     else: raise Exception('don\'t know how to write %s' % file)
 
 def readPFM(file):
