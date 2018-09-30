@@ -1,6 +1,7 @@
 import os
 import time
 import argparse
+import json
 
 
 # Options
@@ -12,6 +13,10 @@ total_crawled = 0
 start_time = time.time()
 parsed_input = None
 parser = None
+data = {
+    'train': [],
+    'validation': []
+}
 
 
 def crawler(image_directory):
@@ -34,7 +39,6 @@ def open_file():
     """Preparing output file"""
     global file, parsed_input
     file = open(parsed_input.output_file, 'w')
-    writer(['left_image', 'right_image', 'left_disparity', 'right_disparity'])
 
 
 def close_file():
@@ -43,11 +47,27 @@ def close_file():
     file.close()
 
 
-def writer(crawler_item):
-    """Writing parsed_input into file"""
-    global file
+def update_data(crawler_item):
+    """Updating the data dictionary"""
+    img_left = crawler_item[0]
+    img_right = crawler_item[1]
+    if 'train' in img_left.lower():
+        data['train'].append({
+            'left': img_left,
+            'right': img_right
+        })
+    else:
+        data['validation'].append({
+            'left': img_left,
+            'right': img_right
+        })
+
+
+def writer():
+    """Writing data into a JSON file"""
+    global file, data
     try:
-        file.write(','.join(crawler_item)+'\n')
+        json.dump(obj=data, fp=file, ensure_ascii=True)
     except Exception as e:
         print(e)
 
@@ -66,7 +86,7 @@ def final_report():
     global parsed_input, total_crawled
     if not parsed_input.is_verbose:
         return
-    print('\nThe process took about %.2f seconds and %d lines are saved to %s.\nTerminated!'
+    print('\nThe process took about %.2f seconds and %d data points are saved to %s\nTerminated!'
           % (end_time - start_time, total_crawled, parsed_input.output_file))
     
 
@@ -90,7 +110,7 @@ def parser_init():
                         '--output',
                         action='store',
                         dest='output_file',
-                        default='output.csv',
+                        default='output.json',
                         help='Designating output file name.',
                         required=False)
 
@@ -117,8 +137,11 @@ open_file()
 
 # Writing data
 for item in crawler(parsed_input.image_directory):
-    writer(item)
+    update_data(item)
     crawling_reporter()
+
+# Write as JSON
+writer()
 
 # Closing file
 close_file()
