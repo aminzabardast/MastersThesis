@@ -1,0 +1,4 @@
+# tf-nightly-gpu==1.10.0.dev20180801
+tf-nightly==1.10.0.dev20180801
+scipy
+numpy
