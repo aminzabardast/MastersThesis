@@ -54,7 +54,11 @@ class DataGenerator(keras.utils.Sequence):
 
         # Generating Data
         left, right, disparity = self.__data_generation(list_imgs_temp)
-        return left, right, disparity
+        return {
+            'left': left,
+            'right': right,
+            'disparity': disparity
+        }
 
 
 if __name__ == '__main__':
