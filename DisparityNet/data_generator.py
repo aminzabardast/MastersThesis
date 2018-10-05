@@ -4,7 +4,7 @@ from IO import read
 import json
 
 
-class DataGenerator(keras.utils.Sequence):
+class FlyingThings3D(keras.utils.Sequence):
     def __init__(self, data_list, batch_size=32, dim=(32, 32, 32), input_channels=3, output_channels=1, shuffle=True):
         """Initializations"""
         self.dim = dim
@@ -64,7 +64,7 @@ class DataGenerator(keras.utils.Sequence):
 # Testing the Generator
 if __name__ == '__main__':
     json_list = json.load(open('output.json', 'r'))
-    gen = DataGenerator(data_list=json_list['train'], dim=(540, 960), input_channels=3, batch_size=5)
+    gen = FlyingThings3D(data_list=json_list['train'], dim=(540, 960), input_channels=3, batch_size=5)
     gen.on_epoch_end()
     print(gen)
     for epoch, data in enumerate(gen):
