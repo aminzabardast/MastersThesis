@@ -34,8 +34,8 @@ class DataGenerator(keras.utils.Sequence):
             right_img = imgs['right']
             disparity_map = str(left_img).replace('png', 'pfm')
 
-            left[i, ] = read(self.data_dir+left_img).reshape((*self.dim, self.input_channels))
-            right[i, ] = read(self.data_dir+right_img).reshape((*self.dim, self.input_channels))
+            left[i, ] = read(self.data_dir+left_img)[:, :, 0:-1].reshape((*self.dim, self.input_channels))
+            right[i, ] = read(self.data_dir+right_img)[:, :, 0:-1].reshape((*self.dim, self.input_channels))
             disparity[i, ] = read(self.disparity_dir+disparity_map).reshape((*self.dim, self.output_channels))
 
         return left, right, disparity
