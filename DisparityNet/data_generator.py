@@ -14,8 +14,8 @@ class DataGenerator(keras.utils.Sequence):
         self.output_channels = output_channels
         self.shuffle = shuffle
         self.indexes = None
-        self.data_dir = 'data/flyingthings3d_data/frames_finalpass/'
-        self.disparity_dir = 'data/flyingthings3d_data/disparity/'
+        self.data_dir = 'data/flyingthings3d_data/frames_finalpass/'  # Insert path to frames_finalpass
+        self.disparity_dir = 'data/flyingthings3d_data/disparity/'  # Insert path to disparity
 
     def on_epoch_end(self):
         """Update indexes after each epoch"""
@@ -61,12 +61,15 @@ class DataGenerator(keras.utils.Sequence):
         }
 
 
+# Testing the Generator
 if __name__ == '__main__':
     json_list = json.load(open('output.json', 'r'))
-    gen = DataGenerator(data_list=json_list['train'], dim=(540, 960), input_channels=4)
+    gen = DataGenerator(data_list=json_list['train'], dim=(540, 960), input_channels=3, batch_size=5)
     gen.on_epoch_end()
     print(gen)
-    for i in gen:
-        print(i[0].shape)
-        print(i[1].shape)
-        print(i[2].shape)
+    for epoch, data in enumerate(gen):
+        print(data['left'].shape)
+        print(data['right'].shape)
+        print(data['disparity'].shape)
+        if epoch == 4:
+            break
