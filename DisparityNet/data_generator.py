@@ -13,7 +13,7 @@ class FlyingThings3D(keras.utils.Sequence):
         self.input_channels = input_channels
         self.output_channels = output_channels
         self.shuffle = shuffle
-        self.indexes = None
+        self.indexes = np.arange(len(self.data_list))
         self.data_dir = 'data/flyingthings3d_data/frames_finalpass/'  # Insert path to frames_finalpass
         self.disparity_dir = 'data/flyingthings3d_data/disparity/'  # Insert path to disparity
 
@@ -54,11 +54,10 @@ class FlyingThings3D(keras.utils.Sequence):
 
         # Generating Data
         left, right, disparity = self.__data_generation(list_imgs_temp)
-        return {
-            'left': left,
-            'right': right,
-            'disparity': disparity
-        }
+        return [left, right], disparity
+
+    def __repr__(self):
+        return '< FlyingThings3D with {} data points >'.format(len(self.data_list))
 
 
 # Testing the Generator
