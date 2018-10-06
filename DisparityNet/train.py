@@ -4,6 +4,7 @@ from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, c
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 
+# Parameters required by Generator
 parameters = {
     'dim': (540, 960),
     'batch_size': 10,
@@ -12,14 +13,18 @@ parameters = {
     'shuffle': True
 }
 
+# Loading list of data from JSON file
 with open('output.json', 'r') as f:
     data_list = json.load(f)
 
+# Creating Generator
 training_generator = FlyingThings3D(data_list=data_list['train'], **parameters)
 
+# Defining Inputs
 left_input = Input(shape=(540, 960, 3), name='left')
 right_input = Input(shape=(540, 960, 3), name='right')
 
+# Creating the network structure
 left_net = left_input
 right_net = right_input
 
@@ -46,12 +51,16 @@ net = Conv2D(kernel_size=(5, 5), filters=25, padding='same', activation='relu', 
 net = UpSampling2D(size=(2, 2), name='up_sample_2')(net)
 decoded = Conv2D(kernel_size=(5, 5), filters=1, padding='same', activation='sigmoid', name='disparity')(net)
 
+# Compiling the model
 autoencoder = Model(inputs=[left_input, right_input], outputs=decoded)
 optimizer = Adam(lr=10e-5)
 autoencoder.compile(optimizer=optimizer, loss='binary_crossentropy')
 
-autoencoder.summary()
+# Uncomment to print summary of model
+# autoencoder.summary()
 
+# Fitting the data to the model
 autoencoder.fit_generator(generator=training_generator, use_multiprocessing=True, workers=2, epochs=5)
 
+# Saving the trained model
 autoencoder.save('trained_model')
