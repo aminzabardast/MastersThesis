@@ -26,7 +26,7 @@ available_cpu_cores = 8
 parameters = {
     'data_list': data_list['train'],
     'dim': (540, 960),
-    'batch_size': 20,
+    'batch_size': 15,
     'input_channels': 3,
     'output_channels': 1,
     'shuffle': True
@@ -71,6 +71,7 @@ autoencoder = Model(inputs=[left_input, right_input], outputs=decoded)
 # Using Multiple GPUs if available
 if available_gpus > 0:
     autoencoder = multi_gpu_model(model=autoencoder, gpus=available_gpus)
+    parameters['batch_size'] *= available_gpus
 optimizer = Adam(lr=10e-5)
 autoencoder.compile(optimizer=optimizer, loss='binary_crossentropy')
 
