@@ -4,6 +4,7 @@ from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, c
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.utils import multi_gpu_model
 
 # Loading list of data from JSON file
 with open('output.json', 'r') as f:
@@ -11,6 +12,15 @@ with open('output.json', 'r') as f:
 
 # A direction for logs
 logs_dir = './logs'
+
+# Number of epochs
+epochs = 1
+
+# Available GPUS
+available_gpus = 2
+
+# Available CPU cores
+available_cpu_cores = 8
 
 # Parameters required by Generator
 parameters = {
@@ -58,6 +68,9 @@ decoded = Conv2D(kernel_size=(5, 5), filters=1, padding='same', activation='sigm
 
 # Compiling the model
 autoencoder = Model(inputs=[left_input, right_input], outputs=decoded)
+# Using Multiple GPUs if available
+if available_gpus > 0:
+    autoencoder = multi_gpu_model(model=autoencoder, gpus=available_gpus)
 optimizer = Adam(lr=10e-5)
 autoencoder.compile(optimizer=optimizer, loss='binary_crossentropy')
 
@@ -68,7 +81,7 @@ autoencoder.compile(optimizer=optimizer, loss='binary_crossentropy')
 tensorboard = TensorBoard(log_dir=logs_dir, histogram_freq=0, write_graph=True, write_images=False, batch_size=parameters['batch_size'])
 
 # Fitting the data to the model
-autoencoder.fit_generator(generator=training_generator, use_multiprocessing=True, workers=2, epochs=10, callbacks=[tensorboard])
+autoencoder.fit_generator(generator=training_generator, use_multiprocessing=True, workers=available_cpu_cores, epochs=epochs, callbacks=[tensorboard])
 
 # Saving the trained model
 autoencoder.save('trained_model')
