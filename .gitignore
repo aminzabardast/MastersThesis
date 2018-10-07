@@ -17,3 +17,8 @@ Thumbs.db
 # JetBrains #
 #############
 .idea
+
+# PIP Stuff #
+#############
+__pycache__
+
