@@ -14,7 +14,7 @@ logs_dir = './logs'
 
 # Parameters required by Generator
 parameters = {
-    'data_list': data_list['train'][0:400],
+    'data_list': data_list['train'],
     'dim': (540, 960),
     'batch_size': 20,
     'input_channels': 3,
