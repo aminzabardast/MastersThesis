@@ -3,22 +3,27 @@ from data_generator import FlyingThings3D
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, concatenate
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
-
-# Parameters required by Generator
-parameters = {
-    'dim': (540, 960),
-    'batch_size': 10,
-    'input_channels': 3,
-    'output_channels': 1,
-    'shuffle': True
-}
+from tensorflow.keras.callbacks import TensorBoard
 
 # Loading list of data from JSON file
 with open('output.json', 'r') as f:
     data_list = json.load(f)
 
+# A direction for logs
+logs_dir = './logs'
+
+# Parameters required by Generator
+parameters = {
+    'data_list': data_list['train'][0:400],
+    'dim': (540, 960),
+    'batch_size': 20,
+    'input_channels': 3,
+    'output_channels': 1,
+    'shuffle': True
+}
+
 # Creating Generator
-training_generator = FlyingThings3D(data_list=data_list['train'], **parameters)
+training_generator = FlyingThings3D(**parameters)
 
 # Defining Inputs
 left_input = Input(shape=(540, 960, 3), name='left')
@@ -59,8 +64,11 @@ autoencoder.compile(optimizer=optimizer, loss='binary_crossentropy')
 # Uncomment to print summary of model
 # autoencoder.summary()
 
+# Call back for Tensorboard
+tensorboard = TensorBoard(log_dir=logs_dir, histogram_freq=0, write_graph=True, write_images=False, batch_size=parameters['batch_size'])
+
 # Fitting the data to the model
-autoencoder.fit_generator(generator=training_generator, use_multiprocessing=True, workers=2, epochs=5)
+autoencoder.fit_generator(generator=training_generator, use_multiprocessing=True, workers=2, epochs=10, callbacks=[tensorboard])
 
 # Saving the trained model
 autoencoder.save('trained_model')
