@@ -64,7 +64,7 @@ net = Conv2D(kernel_size=(5, 5), filters=30, padding='same', activation='relu', 
 net = UpSampling2D(size=(2, 2), name='up_sample_1')(net)
 net = Conv2D(kernel_size=(5, 5), filters=25, padding='same', activation='relu', name='deconv_2')(net)
 net = UpSampling2D(size=(2, 2), name='up_sample_2')(net)
-decoded = Conv2D(kernel_size=(5, 5), filters=1, padding='same', activation='sigmoid', name='disparity')(net)
+decoded = Conv2D(kernel_size=(5, 5), filters=1, padding='same', activation='relu', name='disparity')(net)
 
 # Compiling the model
 autoencoder = Model(inputs=[left_input, right_input], outputs=decoded)
