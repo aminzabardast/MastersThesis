@@ -5,6 +5,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.utils import multi_gpu_model
+from metrics import bad_4_0, bad_2_0
 
 # Loading list of data from JSON file
 with open('output.json', 'r') as f:
@@ -14,7 +15,7 @@ with open('output.json', 'r') as f:
 logs_dir = './logs'
 
 # Number of epochs
-epochs = 1
+epochs = 100
 
 # Available GPUS
 available_gpus = 2
@@ -24,17 +25,17 @@ available_cpu_cores = 8
 
 # Parameters required by Generators
 train_parameters = {
-    'data_list': data_list['train'],
+    'data_list': data_list['train'][0:100],
     'dim': (512, 512),
-    'batch_size': 20,
+    'batch_size': 15,
     'input_channels': 3,
     'output_channels': 1,
     'shuffle': True
 }
 validation_parameters = {
-    'data_list': data_list['validation'],
+    'data_list': data_list['validation'][0:100],
     'dim': (512, 512),
-    'batch_size': 20,
+    'batch_size': 15,
     'input_channels': 3,
     'output_channels': 1,
     'shuffle': True
@@ -120,7 +121,7 @@ if available_gpus > 0:
 
 # Optimizer
 optimizer = Adam(lr=10e-5)
-autoencoder.compile(optimizer=optimizer, loss='mean_squared_error')
+autoencoder.compile(optimizer=optimizer, loss='mae', metrics=[bad_2_0, bad_4_0])
 
 # Uncomment to print summary of model
 # autoencoder.summary()
