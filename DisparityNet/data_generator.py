@@ -5,7 +5,7 @@ import json
 
 
 class FlyingThings3D(keras.utils.Sequence):
-    def __init__(self, data_list, batch_size=32, dim=(32, 32, 32), input_channels=3, output_channels=1, shuffle=True):
+    def __init__(self, data_list, batch_size=32, dim=(512, 512), input_channels=3, output_channels=1, shuffle=True):
         """Initializations"""
         self.dim = dim
         self.batch_size = batch_size
@@ -34,9 +34,9 @@ class FlyingThings3D(keras.utils.Sequence):
             right_img = imgs['right']
             disparity_map = str(left_img).replace('png', 'pfm')
 
-            left[i, ] = read(self.data_dir+left_img)[:, :, 0:-1].reshape((*self.dim, self.input_channels))
-            right[i, ] = read(self.data_dir+right_img)[:, :, 0:-1].reshape((*self.dim, self.input_channels))
-            disparity[i, ] = read(self.disparity_dir+disparity_map).reshape((*self.dim, self.output_channels))
+            left[i, ] = read(self.data_dir+left_img)[:self.dim[0], :self.dim[1], :-1]
+            right[i, ] = read(self.data_dir+right_img)[:self.dim[0], :self.dim[1], :-1]
+            disparity[i, ] = read(self.disparity_dir+disparity_map)[:self.dim[0], :self.dim[1]].reshape((*self.dim, self.output_channels))
 
         return left, right, disparity
 
@@ -63,12 +63,11 @@ class FlyingThings3D(keras.utils.Sequence):
 # Testing the Generator
 if __name__ == '__main__':
     json_list = json.load(open('output.json', 'r'))
-    gen = FlyingThings3D(data_list=json_list['train'], dim=(540, 960), input_channels=3, batch_size=5)
-    gen.on_epoch_end()
-    print(gen)
+    gen = FlyingThings3D(data_list=json_list['train'], dim=(512, 512), input_channels=3, batch_size=5)
     for epoch, data in enumerate(gen):
-        print(data['left'].shape)
-        print(data['right'].shape)
-        print(data['disparity'].shape)
+        print('Left:\t\t'+str(data[0][0].shape))
+        print('Right:\t\t'+str(data[0][1].shape))
+        print('Disparity:\t'+str(data[1].shape), end='\n\n')
         if epoch == 4:
+            print('Terminated!')
             break
