@@ -60,6 +60,34 @@ class FlyingThings3D(keras.utils.Sequence):
         return '< FlyingThings3D with {} data points >'.format(len(self.data_list))
 
 
+# Loading list of data from JSON file
+with open('output.json', 'r') as f:
+    data_list = json.load(f)
+
+# Parameters required by Generators
+train_parameters = {
+    'data_list': data_list['train'],
+    'dim': (512, 512),
+    'batch_size': 15,
+    'input_channels': 3,
+    'output_channels': 1,
+    'shuffle': True
+}
+validation_parameters = {
+    'data_list': data_list['validation'],
+    'dim': (512, 512),
+    'batch_size': 15,
+    'input_channels': 3,
+    'output_channels': 1,
+    'shuffle': True
+}
+
+
+# Creating Generator
+training_generator = FlyingThings3D(**train_parameters)
+validation_generator = FlyingThings3D(**validation_parameters)
+
+
 # Testing the Generator
 if __name__ == '__main__':
     json_list = json.load(open('output.json', 'r'))
