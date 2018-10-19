@@ -1,6 +1,6 @@
-# tf-nightly-gpu==1.10.0.dev20180801
-tf-nightly==1.10.0.dev20180801
+# tensorflow-gpu==1.10  # Uncomment for GPU support
+tensorflow==1.10
 scipy
-numpy
+numpy==1.14.5
 h5py
 pillow
