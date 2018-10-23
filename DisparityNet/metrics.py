@@ -1,4 +1,5 @@
 import tensorflow as tf
+import numpy as np
 
 
 def bad_n(y_true, y_pred, n):
@@ -10,9 +11,23 @@ def bad_n(y_true, y_pred, n):
     return r
 
 
+def bad_n_np(y_true, y_pred, n):
+    """Numpy implementation of Bad n Metric"""
+    diff = np.abs(np.subtract(y_true, y_pred))
+    diff_n = np.sum(diff > n)
+    total = np.multiply(diff.shape[0], diff.shape[1])
+    r = np.divide(np.multiply(diff_n, 100), total)
+    return r
+
+
 def bad_4_0(y_true, y_pred):
     """Returning percentage of pixels with more than 4 units of disparity in errors"""
     return bad_n(y_true, y_pred, 4)
+
+
+def bad_4_0_np(y_true, y_pred):
+    """Numpy implementation of Bad 4.0 Metric"""
+    return bad_n_np(y_true, y_pred, 4)
 
 
 def bad_2_0(y_true, y_pred):
@@ -20,11 +35,26 @@ def bad_2_0(y_true, y_pred):
     return bad_n(y_true, y_pred, 2)
 
 
+def bad_2_0_np(y_true, y_pred):
+    """Numpy implementation of Bad 2.0 Metric"""
+    return bad_n_np(y_true, y_pred, 2)
+
+
 def bad_1_0(y_true, y_pred):
     """Returning percentage of pixels with more than 1 units of disparity in errors"""
     return bad_n(y_true, y_pred, 1)
 
 
+def bad_1_0_np(y_true, y_pred):
+    """Numpy implementation of Bad 1.0 Metric"""
+    return bad_n_np(y_true, y_pred, 1)
+
+
 def bad_0_5(y_true, y_pred):
     """Returning percentage of pixels with more than 0.5 units of disparity in errors"""
     return bad_n(y_true, y_pred, 0.5)
+
+
+def bad_0_5_np(y_true, y_pred):
+    """Numpy implementation of Bad 0.5 Metric"""
+    return bad_n_np(y_true, y_pred, 0.5)
