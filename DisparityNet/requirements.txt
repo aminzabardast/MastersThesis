@@ -4,3 +4,4 @@ scipy
 numpy==1.14.5
 h5py
 pillow
+matplotlib
