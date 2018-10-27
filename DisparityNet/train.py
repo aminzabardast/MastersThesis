@@ -3,7 +3,7 @@ import json
 from data_generator import train_parameters, training_generator, validation_generator
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.optimizers import Adam
-from callbacks import tensorboard
+from callbacks import tensorboard, epoch_csv_logger, batch_csv_logger
 from model import Models
 
 m = Models()
@@ -39,8 +39,8 @@ autoencoder.compile(optimizer=optimizer, loss='mae', metrics=[bad_4_0, bad_2_0, 
 
 # Fitting the data to the model
 autoencoder.fit_generator(generator=training_generator, validation_data=validation_generator, use_multiprocessing=True,
-                          workers=available_cpu_cores, epochs=epochs, callbacks=[tensorboard],
-                          initial_epoch=initial_epoch)
+                          workers=available_cpu_cores, epochs=epochs,
+                          callbacks=[tensorboard, epoch_csv_logger, batch_csv_logger], initial_epoch=initial_epoch)
 
 # Saving the trained model
 m.save_model(autoencoder)
