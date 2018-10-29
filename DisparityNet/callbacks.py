@@ -28,7 +28,8 @@ class EpochCSVLogger(Callback):
 
     def write_header(self, logs):
         if self.is_initial:
-            self.csv.writerow(['epoch']+[x for x in logs.keys()])
+            keys = [x for x in logs.keys()]
+            self.csv.writerow(['epoch']+[x for x in sorted(keys)])
             self.is_initial = False
 
     def on_train_begin(self, logs=None):
@@ -41,7 +42,8 @@ class EpochCSVLogger(Callback):
 
     def on_epoch_end(self, epoch, logs=None):
         self.write_header(logs)
-        self.csv.writerow([epoch]+[logs[x] for x in logs])
+        keys = [x for x in logs.keys()]
+        self.csv.writerow([epoch]+[logs[x] for x in sorted(keys)])
 
 
 class BatchCSVLogger(Callback):
@@ -66,7 +68,8 @@ class BatchCSVLogger(Callback):
 
     def write_header(self, logs):
         if self.is_initial:
-            self.csv.writerow([x for x in logs.keys()])
+            keys = [x for x in logs.keys()]
+            self.csv.writerow([x for x in sorted(keys)])
             self.is_initial = False
 
     def on_train_begin(self, logs=None):
@@ -79,7 +82,8 @@ class BatchCSVLogger(Callback):
 
     def on_batch_end(self, batch, logs=None):
         self.write_header(logs)
-        self.csv.writerow([logs[x] for x in logs])
+        keys = [x for x in logs.keys()]
+        self.csv.writerow([logs[x] for x in sorted(keys)])
 
 
 # Call Back For Tensorboard
