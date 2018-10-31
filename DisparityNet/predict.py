@@ -15,7 +15,7 @@ PARSER = None
 PARSER_INPUT = None
 INPUT_SHAPE = (1, 512, 512, 3)
 DISPARITY_SHAPE = (512, 512)
-MODEL = 'models/15.keras'
+MODEL = None  # Path to trained model
 
 
 def parser_init():
@@ -73,7 +73,7 @@ def parser_init():
 
 def read_images():
     # Loading data and reshaping to network input size
-    global left_img, right_img, truth
+    global left_img, right_img, truth, truth_img
     if is_verbose:
         print('Reading Images ...', end='\r')
     left_img = read(PARSER_INPUT.left_img_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
@@ -82,7 +82,8 @@ def read_images():
     if PARSER_INPUT.truth_img:
         if is_verbose:
             print('Reading Truth ...', end='\r')
-        truth = read(PARSER_INPUT.truth_img)[:512, :512].reshape(DISPARITY_SHAPE)
+        truth_img = read(PARSER_INPUT.truth_img)[:512, :512].reshape(DISPARITY_SHAPE)
+        truth = True
 
 
 def load_network():
@@ -111,10 +112,10 @@ def predict():
             plt.imsave('{}.{}'.format(PARSER_INPUT.output_img, f), disparity, cmap='jet')
         elif f == 'pfm':
             write('{}.{}'.format(PARSER_INPUT.output_img, f), disparity)
-    if truth.any():
+    if truth:
         if is_verbose:
             print('Saving Truth ...', end='\r')
-        plt.imsave('{}-truth.png'.format(PARSER_INPUT.output_img), truth, cmap='jet')
+        plt.imsave('{}-truth.png'.format(PARSER_INPUT.output_img), truth_img, cmap='jet')
 
 
 def calculate_outputs_formats():
@@ -122,10 +123,12 @@ def calculate_outputs_formats():
 
 
 def metrics():
-    m4 = bad_4_0_np(truth, disparity)
-    m2 = bad_2_0_np(truth, disparity)
-    m1 = bad_1_0_np(truth, disparity)
-    m0 = bad_0_5_np(truth, disparity)
+    if not truth:
+        return
+    m4 = bad_4_0_np(truth_img, disparity)
+    m2 = bad_2_0_np(truth_img, disparity)
+    m1 = bad_1_0_np(truth_img, disparity)
+    m0 = bad_0_5_np(truth_img, disparity)
     if is_verbose:
         print("Metrics are:\n\tBad 4.0: {}\n\tBad 2.0: {}\n\tBad 1.0: {}\n\tBad 0.5: {}\n".format(
             m4, m2, m1, m0))
