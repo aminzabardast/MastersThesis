@@ -66,7 +66,7 @@ with open('output.json', 'r') as f:
 
 # Parameters required by Generators
 train_parameters = {
-    'data_list': data_list['train'],
+    'data_list': data_list['train'][0:500],
     'dim': (512, 512),
     'batch_size': 15,
     'input_channels': 3,
@@ -74,7 +74,7 @@ train_parameters = {
     'shuffle': True
 }
 validation_parameters = {
-    'data_list': data_list['validation'],
+    'data_list': data_list['validation'][0:100],
     'dim': (512, 512),
     'batch_size': 15,
     'input_channels': 3,
