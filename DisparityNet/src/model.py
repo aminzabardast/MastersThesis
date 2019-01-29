@@ -20,7 +20,7 @@ class BaseNetwork(object):
         self.epochs = 1
         self.available_gpus = 2
 
-    def model(self, left_input, right_input):
+    def model(self, *args, **kwargs):
         """
         Defines the model and returns a tuple of Tensors needed for calculating the loss.
         """
@@ -53,7 +53,7 @@ class BaseNetwork(object):
         """
         left_input = Input(shape=(*train_parameters['dim'], train_parameters['input_channels']), name='left')
         right_input = Input(shape=(*train_parameters['dim'], train_parameters['input_channels']), name='right')
-        prediction = self.model(left_input, right_input)
+        prediction = self.model(left_input=left_input, right_input=right_input)
         autoencoder = Model(inputs=[left_input, right_input], outputs=prediction)
 
         if self.available_gpus > 1:
