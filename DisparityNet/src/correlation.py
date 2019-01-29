@@ -39,12 +39,7 @@ def _correlation_grad(corr_op, gradients):
 
 
 def correlation_layer(left, right):
-    """Distance and angle of two inputs.
-
-    Compute the concatenation of element-wise subtraction and
-    multiplication of two inputs.
-
-    """
+    """Calculates correlation of two images"""
     def _correlation(args):
         x1 = args[0]
         x2 = args[1]
