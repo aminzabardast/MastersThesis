@@ -1,33 +1,34 @@
 # Makefile
 
 TF_INC = `python -c "import tensorflow; print(tensorflow.sysconfig.get_include())"`
+TF_LIB = `python -c "import tensorflow; print(tensorflow.sysconfig.get_lib())"`
 
 ifndef CUDA_HOME
     CUDA_HOME := /usr/local/cuda
 endif
-CUDA_HOME := /usr/local/cuda-8.0
+CUDA_HOME := /usr/local/cuda-9.0
 
 CC        = gcc -O2 -pthread
 CXX       = g++
-GPUCC     = nvcc
-CFLAGS    = -std=c++11 -I$(TF_INC) -I"$(CUDA_HOME)/include" # -DGOOGLE_CUDA=1
+GPUCC     = nvcc --expt-relaxed-constexpr
+CFLAGS    = -std=c++11 -I$(TF_INC) -I"$(CUDA_HOME)/.." -DGOOGLE_CUDA=1
 GPUCFLAGS = -c
 LFLAGS    = -pthread -shared -fPIC
 GPULFLAGS = -x cu -Xcompiler -fPIC
-CGPUFLAGS = -L$(CUDA_HOME)/lib -L$(CUDA_HOME)/lib64 -lcudart
+CGPUFLAGS = -L$(CUDA_HOME)/lib -L$(CUDA_HOME)/lib64 -lcudart -L$(TF_LIB) -ltensorflow_framework
 
 OUT_DIR   = src/ops/build
-#PREPROCESSING_SRC = "src/ops/preprocessing/preprocessing.cc" "src/ops/preprocessing/kernels/flow_augmentation.cc" "src/ops/preprocessing/kernels/augmentation_base.cc" "src/ops/preprocessing/kernels/data_augmentation.cc"
-#GPU_SRC_DATA_AUG  	= src/ops/preprocessing/kernels/data_augmentation.cu.cc
-#GPU_SRC_FLOW     	= src/ops/preprocessing/kernels/flow_augmentation_gpu.cu.cc
-#GPU_PROD_DATA_AUG 	= $(OUT_DIR)/data_augmentation.o
-#GPU_PROD_FLOW    	= $(OUT_DIR)/flow_augmentation_gpu.o
-#PREPROCESSING_PROD	= $(OUT_DIR)/preprocessing.so
+PREPROCESSING_SRC = "src/ops/preprocessing/preprocessing.cc" "src/ops/preprocessing/kernels/flow_augmentation.cc" "src/ops/preprocessing/kernels/augmentation_base.cc" "src/ops/preprocessing/kernels/data_augmentation.cc"
+GPU_SRC_DATA_AUG  	= src/ops/preprocessing/kernels/data_augmentation.cu.cc
+GPU_SRC_FLOW     	= src/ops/preprocessing/kernels/flow_augmentation_gpu.cu.cc
+GPU_PROD_DATA_AUG 	= $(OUT_DIR)/data_augmentation.o
+GPU_PROD_FLOW    	= $(OUT_DIR)/flow_augmentation_gpu.o
+PREPROCESSING_PROD	= $(OUT_DIR)/preprocessing.so
 
-#DOWNSAMPLE_SRC = "src/ops/downsample/downsample_kernel.cc" "src/ops/downsample/downsample_op.cc"
-#GPU_SRC_DOWNSAMPLE  = src/ops/downsample/downsample_kernel_gpu.cu.cc
-#GPU_PROD_DOWNSAMPLE = $(OUT_DIR)/downsample_kernel_gpu.o
-#DOWNSAMPLE_PROD 	= $(OUT_DIR)/downsample.so
+DOWNSAMPLE_SRC = "src/ops/downsample/downsample_kernel.cc" "src/ops/downsample/downsample_op.cc"
+GPU_SRC_DOWNSAMPLE  = src/ops/downsample/downsample_kernel_gpu.cu.cc
+GPU_PROD_DOWNSAMPLE = $(OUT_DIR)/downsample_kernel_gpu.o
+DOWNSAMPLE_PROD 	= $(OUT_DIR)/downsample.so
 
 CORRELATION_SRC = "src/ops/correlation/correlation_kernel.cc" "src/ops/correlation/correlation_grad_kernel.cc" "src/ops/correlation/correlation_op.cc"
 GPU_SRC_CORRELATION  = src/ops/correlation/correlation_kernel.cu.cc
@@ -57,7 +58,7 @@ ifeq ($(detected_OS),Linux)
 	CFLAGS += -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES -D__STRICT_ANSI__ -D_GLIBCXX_USE_CXX11_ABI=0
 endif
 
-all: correlation flowwarp # preprocessing downsample
+all: correlation flowwarp
 
 #preprocessing:
 #	$(GPUCC) -g $(CFLAGS) $(GPUCFLAGS) $(GPU_SRC_DATA_AUG) $(GPULFLAGS) $(GPUDEF) -o $(GPU_PROD_DATA_AUG)
@@ -80,4 +81,4 @@ flowwarp:
 	$(CXX) -g $(CFLAGS)  $(FLOWWARP_SRC) $(GPU_PROD_FLOWWARP) $(GPU_PROD_FLOWWARP_GRAD) $(LFLAGS) $(CGPUFLAGS) -o $(FLOWWARP_PROD)
 
 clean:
-	rm -f $(GPU_PROD_FLOW) $(GPU_PROD_DATA_AUG) # $(PREPROCESSING_PROD) $(GPU_PROD_FLOW) $(GPU_PROD_DATA_AUG) $(DOWNSAMPLE_PROD) $(GPU_PROD_DOWNSAMPLE)
+	rm -f $(PREPROCESSING_PROD) $(GPU_PROD_FLOW) $(GPU_PROD_DATA_AUG) $(DOWNSAMPLE_PROD) $(GPU_PROD_DOWNSAMPLE)

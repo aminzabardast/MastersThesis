@@ -1,7 +1,7 @@
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model, load_model, save_model
 from src.metrics import bad_4_0, bad_2_0, bad_1_0, bad_0_5
-from data_generator import train_parameters
+from data_generator import train_parameters, validation_parameters
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.optimizers import Adam
 from src.callbacks import tensorboard, epoch_csv_logger, batch_csv_logger
@@ -19,7 +19,6 @@ class BaseNetwork(object):
         self.name = 'base_network'
         self.epochs = 1
         self.available_gpus = 2
-        self.available_cpu_cores = 8
 
     def model(self, left_input, right_input):
         """
@@ -63,8 +62,11 @@ class BaseNetwork(object):
         optimizer = Adam(lr=10e-4)
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
 
+        validation_steps = len(validation_parameters['data_list'])//validation_parameters['batch_size']
+        steps_per_epoch = len(train_parameters['data_list'])//train_parameters['batch_size']
+
         autoencoder.fit_generator(generator=training_generator, validation_data=validation_generator,
-                                  use_multiprocessing=True,
-                                  workers=self.available_cpu_cores, epochs=self.epochs,
+                                  use_multiprocessing=False, validation_steps=validation_steps,
+                                  workers=1, epochs=self.epochs, steps_per_epoch=steps_per_epoch,
                                   callbacks=[tensorboard, epoch_csv_logger, batch_csv_logger])
         save_model(model=autoencoder, filepath='models/{}.keras'.format(self.name))
