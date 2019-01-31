@@ -4,11 +4,12 @@ from src.model import BaseNetwork
 
 class DisparityNetS(BaseNetwork):
 
-    def __init__(self, epochs=1, name_prefix='s'):
+    def __init__(self, epochs=1, name_prefix='s', output_channels=1):
         super(DisparityNetS, self).__init__()
         self.name = 'disparitynet_s'
         self.epochs = epochs
         self.name_prefix = name_prefix
+        self.output_channels = output_channels
 
     def model(self, *args, **kwargs):
 
@@ -48,7 +49,7 @@ class DisparityNetS(BaseNetwork):
         deconv1 = Conv2DTranspose(filters=32, kernel_size=(5, 5), strides=2, padding='same', activation='relu', name='{}/deconv1'.format(self.name_prefix))(deconv2_concat)  # Resulting Dimensions: 256x256x32
         deconv1_concat = concatenate([deconv1, conv1])
 
-        deconv0 = Conv2DTranspose(filters=1, kernel_size=(5, 5), strides=2, padding='same', activation='relu', name='{}/deconv0'.format(self.name_prefix))(deconv1_concat)  # Resulting Dimensions: 512x512x16
+        deconv0 = Conv2DTranspose(filters=self.output_channels, kernel_size=(5, 5), strides=2, padding='same', activation='relu', name='{}/deconv0'.format(self.name_prefix))(deconv1_concat)  # Resulting Dimensions: 512x512x16
         return deconv0
 
     def loss(self, *args, **kwargs):
