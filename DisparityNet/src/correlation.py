@@ -38,24 +38,12 @@ def _correlation_grad(corr_op, gradients):
     return corr_grads.backprops_a, corr_grads.backprops_b
 
 
-def correlation_layer_large_displacement(left, right):
+def correlation_layer(left, right):
     """Calculates correlation of two images"""
     def _correlation(args):
         x1 = args[0]
         x2 = args[1]
-        x = relu(correlation(x1, x2, 1, 50, 1, 2, 50))
-        return x
-
-    corr = Lambda(_correlation, output_shape=(K.int_shape(left)[-1],))([left, right])
-    return corr
-
-
-def correlation_layer_small_displacement(left, right):
-    """Calculates correlation of two images"""
-    def _correlation(args):
-        x1 = args[0]
-        x2 = args[1]
-        x = relu(correlation(x1, x2, 1, 20, 1, 2, 20))
+        x = relu(correlation(x1, x2, 1, 40, 1, 2, 40))
         return x
 
     corr = Lambda(_correlation, output_shape=(K.int_shape(left)[-1],))([left, right])
