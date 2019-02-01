@@ -1,10 +1,10 @@
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model, load_model, save_model
 from src.metrics import bad_4_0, bad_2_0, bad_1_0, bad_0_5
-from data_generator import train_parameters
+from data_generator import train_parameters, validation_parameters
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.optimizers import Adam
-from src.callbacks import tensorboard, epoch_csv_logger, batch_csv_logger
+from src.callbacks import TensorBoard, EpochCSVLogger, BatchCSVLogger
 from IO import read, write
 import matplotlib.pyplot as plt
 
@@ -15,13 +15,14 @@ DISPARITY_SHAPE = (512, 512)
 
 class BaseNetwork(object):
 
-    def __init__(self):
+    def __init__(self, epochs=1, name_prefix='b', output_channels=1):
         self.name = 'base_network'
-        self.epochs = 1
+        self.epochs = epochs
         self.available_gpus = 2
-        self.available_cpu_cores = 8
+        self.name_prefix = name_prefix
+        self.output_channels = output_channels
 
-    def model(self, left_input, right_input):
+    def model(self, *args, **kwargs):
         """
         Defines the model and returns a tuple of Tensors needed for calculating the loss.
         """
@@ -40,7 +41,7 @@ class BaseNetwork(object):
         """
         left_img = read(input_a_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
         right_img = read(input_b_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
-        autoencoder = load_model('models/{}.keras'.format(self.name), compile=False)  # Here should be an address for a pre-trained model
+        autoencoder = load_model('models/{}.keras'.format(self.name), compile=False)
         optimizer = Adam()
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_1_0, bad_2_0, bad_4_0])
         disparity = autoencoder.predict(x=[left_img, right_img]).reshape(DISPARITY_SHAPE)
@@ -54,17 +55,26 @@ class BaseNetwork(object):
         """
         left_input = Input(shape=(*train_parameters['dim'], train_parameters['input_channels']), name='left')
         right_input = Input(shape=(*train_parameters['dim'], train_parameters['input_channels']), name='right')
-        prediction = self.model(left_input, right_input)
+        prediction = self.model(left_input=left_input, right_input=right_input)
         autoencoder = Model(inputs=[left_input, right_input], outputs=prediction)
 
         if self.available_gpus > 1:
             autoencoder = multi_gpu_model(model=autoencoder, gpus=self.available_gpus)
 
-        optimizer = Adam(lr=10e-4)
+        optimizer = Adam(lr=10**-6)
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
 
+        validation_steps = len(validation_parameters['data_list'])//validation_parameters['batch_size']
+        steps_per_epoch = len(train_parameters['data_list'])//train_parameters['batch_size']
+
         autoencoder.fit_generator(generator=training_generator, validation_data=validation_generator,
-                                  use_multiprocessing=True,
-                                  workers=self.available_cpu_cores, epochs=self.epochs,
-                                  callbacks=[tensorboard, epoch_csv_logger, batch_csv_logger])
+                                  use_multiprocessing=False, validation_steps=validation_steps,
+                                  workers=1, epochs=self.epochs, steps_per_epoch=steps_per_epoch,
+                                  callbacks=[TensorBoard(log_dir='logs/{}/'.format(self.name), histogram_freq=0,
+                                                         write_graph=True, write_images=False,
+                                                         batch_size=train_parameters['batch_size']),
+                                             EpochCSVLogger(filename='csvs/{}.epoch.log.csv'.format(self.name),
+                                                            append=True),
+                                             BatchCSVLogger(filename='csvs/{}.batch.log.csv'.format(self.name),
+                                                            append=True)])
         save_model(model=autoencoder, filepath='models/{}.keras'.format(self.name))
