@@ -41,7 +41,7 @@ class BaseNetwork(object):
         """
         left_img = read(input_a_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
         right_img = read(input_b_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
-        autoencoder = load_model('models/{}.keras'.format(self.name), compile=False)  # Here should be an address for a pre-trained model
+        autoencoder = load_model('models/{}.keras'.format(self.name), compile=False)
         optimizer = Adam()
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_1_0, bad_2_0, bad_4_0])
         disparity = autoencoder.predict(x=[left_img, right_img]).reshape(DISPARITY_SHAPE)
@@ -62,7 +62,6 @@ class BaseNetwork(object):
             autoencoder = multi_gpu_model(model=autoencoder, gpus=self.available_gpus)
 
         optimizer = Adam(lr=10**-6)
-        # optimizer = SGD(lr=10**-6, momentum=0.5)
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
 
         validation_steps = len(validation_parameters['data_list'])//validation_parameters['batch_size']
