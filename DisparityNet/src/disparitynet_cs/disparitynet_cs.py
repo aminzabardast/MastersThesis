@@ -12,8 +12,7 @@ class DisparityNetCS(BaseNetwork):
         self.epochs = epochs
         self.disparitynet_c = DisparityNetC(self.epochs,
                                             name_prefix='{}/c'.format(name_prefix),
-                                            output_channels=2,
-                                            large_displacement=True)
+                                            output_channels=2)
         self.disparitynet_s = DisparityNetS(self.epochs,
                                             name_prefix='{}/s'.format(name_prefix),
                                             output_channels=output_channels)
