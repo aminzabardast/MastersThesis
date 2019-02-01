@@ -84,12 +84,3 @@ class BatchCSVLogger(Callback):
         self.write_header(logs)
         keys = [x for x in logs.keys()]
         self.csv.writerow([logs[x] for x in sorted(keys)])
-
-
-# Call Back For Tensorboard
-tensorboard = TensorBoard(log_dir='./logs', histogram_freq=0, write_graph=True, write_images=False,
-                          batch_size=train_parameters['batch_size'])
-
-epoch_csv_logger = EpochCSVLogger(filename='csvs/epoch.log.csv', append=True)
-
-batch_csv_logger = BatchCSVLogger(filename='csvs/batch.log.csv', append=True)
