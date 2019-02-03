@@ -1,5 +1,4 @@
-from tensorflow.keras.callbacks import TensorBoard, Callback
-from data_generator import train_parameters
+from tensorflow.keras.callbacks import Callback
 import csv
 from shutil import copy2 as copy
 from os import remove

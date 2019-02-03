@@ -4,7 +4,8 @@ from src.metrics import bad_4_0, bad_2_0, bad_1_0, bad_0_5
 from data_generator import train_parameters, validation_parameters
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.optimizers import Adam
-from src.callbacks import TensorBoard, EpochCSVLogger, BatchCSVLogger
+from src.callbacks import EpochCSVLogger, BatchCSVLogger
+from tensorflow.keras.callbacks import TensorBoard, ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 from IO import read, write
 import matplotlib.pyplot as plt
 
@@ -21,6 +22,17 @@ class BaseNetwork(object):
         self.available_gpus = 2
         self.name_prefix = name_prefix
         self.output_channels = output_channels
+
+        # LEarning Rate
+        self.lr = 10**-3
+
+        # Callback Parameters
+        self.monitor = 'val_bad_2_0'
+        self.min_delta = 0.1
+        self.reduction_patience = 2
+        self.reduction_factor = 0.1
+        self.termination_patience = 11
+        self.save_period = 10
 
     def model(self, *args, **kwargs):
         """
@@ -61,7 +73,7 @@ class BaseNetwork(object):
         if self.available_gpus > 1:
             autoencoder = multi_gpu_model(model=autoencoder, gpus=self.available_gpus)
 
-        optimizer = Adam(lr=10**-6)
+        optimizer = Adam(lr=self.lr)
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
 
         validation_steps = len(validation_parameters['data_list'])//validation_parameters['batch_size']
@@ -70,11 +82,20 @@ class BaseNetwork(object):
         autoencoder.fit_generator(generator=training_generator, validation_data=validation_generator,
                                   use_multiprocessing=False, validation_steps=validation_steps,
                                   workers=1, epochs=self.epochs, steps_per_epoch=steps_per_epoch,
-                                  callbacks=[TensorBoard(log_dir='logs/{}/'.format(self.name), histogram_freq=0,
-                                                         write_graph=True, write_images=False,
+                                  callbacks=[TensorBoard(log_dir='logs/{}/'.format(self.name),
+                                                         histogram_freq=0, write_graph=True,
+                                                         write_images=False,
                                                          batch_size=train_parameters['batch_size']),
                                              EpochCSVLogger(filename='csvs/{}.epoch.log.csv'.format(self.name),
                                                             append=True),
                                              BatchCSVLogger(filename='csvs/{}.batch.log.csv'.format(self.name),
-                                                            append=True)])
-        save_model(model=autoencoder, filepath='models/{}.keras'.format(self.name))
+                                                            append=True),
+                                             ReduceLROnPlateau(monitor=self.monitor, verbose=1, mode='min',
+                                                               factor=self.reduction_factor, min_delta=self.min_delta,
+                                                               patience=self.reduction_patience),
+                                             EarlyStopping(monitor=self.monitor, verbose=1, mode='min',
+                                                           patience=self.termination_patience,
+                                                           min_delta=self.min_delta),
+                                             ModelCheckpoint(filepath='models/'+self.name+'-{epoch:02d}-{val_bad_2_0:.2f}.keras',
+                                                             monitor=self.monitor, save_best_only=True, mode='min',
+                                                             verbose=1, period=self.save_period)])
