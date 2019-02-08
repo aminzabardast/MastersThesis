@@ -30,7 +30,7 @@ class BaseNetwork(object):
         self.monitor = 'val_bad_2_0'
         self.min_delta = 0.1
         self.reduction_patience = 2
-        self.reduction_factor = 0.1
+        self.reduction_factor = 0.5
         self.termination_patience = 11
         self.save_period = 10
 
@@ -96,6 +96,7 @@ class BaseNetwork(object):
                                              EarlyStopping(monitor=self.monitor, verbose=1, mode='min',
                                                            patience=self.termination_patience,
                                                            min_delta=self.min_delta),
-                                             ModelCheckpoint(filepath='models/'+self.name+'-{epoch:02d}-{val_bad_2_0:.2f}.keras',
+                                             ModelCheckpoint(filepath='models/'+self.name+'.{epoch:02d}-{val_bad_2_0:.2f}.keras',
                                                              monitor=self.monitor, save_best_only=True, mode='min',
                                                              verbose=1, period=self.save_period)])
+        save_model(autoencoder, 'models/{}.keras'.format(self.name))
