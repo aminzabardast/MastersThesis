@@ -1,7 +1,7 @@
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model, load_model, save_model
 from src.metrics import bad_4_0, bad_2_0, bad_1_0, bad_0_5
-from data_generator import train_parameters, validation_parameters
+from data_generator import other_parameters
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.optimizers import Adam
 from src.callbacks import EpochCSVLogger, BatchCSVLogger
@@ -65,8 +65,8 @@ class BaseNetwork(object):
         """
         Training the model using two generators, one for training data and one for validation
         """
-        left_input = Input(shape=(*train_parameters['dim'], train_parameters['input_channels']), name='left')
-        right_input = Input(shape=(*train_parameters['dim'], train_parameters['input_channels']), name='right')
+        left_input = Input(shape=(*other_parameters['dim'], other_parameters['input_channels']), name='left')
+        right_input = Input(shape=(*other_parameters['dim'], other_parameters['input_channels']), name='right')
         prediction = self.model(left_input=left_input, right_input=right_input)
         autoencoder = Model(inputs=[left_input, right_input], outputs=prediction)
 
@@ -76,16 +76,13 @@ class BaseNetwork(object):
         optimizer = Adam(lr=self.lr)
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
 
-        validation_steps = len(validation_parameters['data_list'])//validation_parameters['batch_size']
-        steps_per_epoch = len(train_parameters['data_list'])//train_parameters['batch_size']
-
         autoencoder.fit_generator(generator=training_generator, validation_data=validation_generator,
-                                  use_multiprocessing=False, validation_steps=validation_steps,
-                                  workers=1, epochs=self.epochs, steps_per_epoch=steps_per_epoch,
+                                  use_multiprocessing=False, validation_steps=len(validation_generator),
+                                  workers=1, epochs=self.epochs, steps_per_epoch=len(training_generator),
                                   callbacks=[TensorBoard(log_dir='logs/{}/'.format(self.name),
                                                          histogram_freq=0, write_graph=True,
                                                          write_images=False,
-                                                         batch_size=train_parameters['batch_size']),
+                                                         batch_size=other_parameters['batch_size']),
                                              EpochCSVLogger(filename='csvs/{}.epoch.log.csv'.format(self.name),
                                                             append=True),
                                              BatchCSVLogger(filename='csvs/{}.batch.log.csv'.format(self.name),

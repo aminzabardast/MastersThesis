@@ -14,8 +14,8 @@ class FlyingThings3D(keras.utils.Sequence):
         self.output_channels = output_channels
         self.shuffle = shuffle
         self.indexes = np.arange(len(self.data_list))
-        self.data_dir = 'data/flyingthings3d_data/frames_finalpass/'  # Insert path to frames_finalpass
-        self.disparity_dir = 'data/flyingthings3d_data/disparity/'  # Insert path to disparity
+        self.data_dir = 'data/flying_things_3d/frames_finalpass/'  # Insert path to frames_finalpass
+        self.disparity_dir = 'data/flying_things_3d/disparity/'  # Insert path to disparity
 
     def on_epoch_end(self):
         """Update indexes after each epoch"""
@@ -70,7 +70,7 @@ class SlidingTissues3D(keras.utils.Sequence):
         self.output_channels = output_channels
         self.shuffle = shuffle
         self.indexes = np.arange(len(self.data_list))
-        self.data_dir = 'data/sliding_tissues_3d/'  # Insert path to frames_finalpass
+        self.data_dir = 'data/sliding_tissues_3d/'  # Insert path to frames
         self.disparity_dir = 'data/sliding_tissues_3d/'  # Insert path to disparity
 
     def on_epoch_end(self):
@@ -113,42 +113,46 @@ class SlidingTissues3D(keras.utils.Sequence):
         return [left, right], disparity
 
     def __repr__(self):
-        return '< FlyingThings3D with {} data points >'.format(len(self.data_list))
+        return '< SlidingOrgans3D with {} data points >'.format(len(self.data_list))
 
 
 # Loading list of data from JSON file
-with open('output.json', 'r') as f:
-    data_list = json.load(f)
+with open('data/flying_things_3d/output.json', 'r') as f:
+    data_list_ft3d = json.load(f)
+
+# Loading list of data from JSON file
+with open('data/sliding_tissues_3d/output.json', 'r') as f:
+    data_list_st3d = json.load(f)
 
 # Parameters required by Generators
-train_parameters = {
-    'data_list': data_list['train'],
+other_parameters = {
     'dim': (512, 512),
-    'batch_size': 15,
-    'input_channels': 3,
-    'output_channels': 1,
-    'shuffle': True
-}
-validation_parameters = {
-    'data_list': data_list['validation'],
-    'dim': (512, 512),
-    'batch_size': 15,
+    'batch_size': 5,
     'input_channels': 3,
     'output_channels': 1,
     'shuffle': True
 }
 
+# Creating Generator for Flying Things 3D
+training_generator_ft3d = FlyingThings3D(data_list_ft3d['train'][0:500], **other_parameters)
+validation_generator_ft3d = FlyingThings3D(data_list_ft3d['validation'][0:300], **other_parameters)
 
-# Creating Generator
-training_generator = SlidingTissues3D(**train_parameters)
-validation_generator = SlidingTissues3D(**validation_parameters)
+# Creating Generator for Sliding Organs 3D
+training_generator_st3d = SlidingTissues3D(data_list_st3d['train'], **other_parameters)
+validation_generator_st3d = SlidingTissues3D(data_list_st3d['validation'], **other_parameters)
 
 
 # Testing the Generator
 if __name__ == '__main__':
-    json_list = json.load(open('output.json', 'r'))
-    gen = SlidingTissues3D(data_list=json_list['train'], dim=(512, 512), input_channels=3, batch_size=5)
-    for epoch, data in enumerate(gen):
+    print(training_generator_st3d)
+    for epoch, data in enumerate(training_generator_st3d):
+        print('Left:\t\t'+str(data[0][0].shape))
+        print('Right:\t\t'+str(data[0][1].shape))
+        print('Disparity:\t'+str(data[1].shape), end='\n\n')
+        if epoch == 4:
+            break
+    print(training_generator_ft3d)
+    for epoch, data in enumerate(training_generator_ft3d):
         print('Left:\t\t'+str(data[0][0].shape))
         print('Right:\t\t'+str(data[0][1].shape))
         print('Disparity:\t'+str(data[1].shape), end='\n\n')
