@@ -134,8 +134,8 @@ other_parameters = {
 }
 
 # Creating Generator for Flying Things 3D
-training_generator_ft3d = FlyingThings3D(data_list_ft3d['train'][0:500], **other_parameters)
-validation_generator_ft3d = FlyingThings3D(data_list_ft3d['validation'][0:300], **other_parameters)
+training_generator_ft3d = FlyingThings3D(data_list_ft3d['train'], **other_parameters)
+validation_generator_ft3d = FlyingThings3D(data_list_ft3d['validation'], **other_parameters)
 
 # Creating Generator for Sliding Organs 3D
 training_generator_st3d = SlidingTissues3D(data_list_st3d['train'], **other_parameters)
