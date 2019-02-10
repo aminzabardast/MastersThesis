@@ -6,15 +6,12 @@ from ..flow_warp import warp_layer
 
 class DisparityNetCS(BaseNetwork):
 
-    def __init__(self, epochs=1, name_prefix='cs', output_channels=1):
+    def __init__(self, name_prefix='cs', output_channels=1):
         super(DisparityNetCS, self).__init__()
         self.name = 'disparitynet_cs'
-        self.epochs = epochs
-        self.disparitynet_c = DisparityNetC(self.epochs,
-                                            name_prefix='{}/c'.format(name_prefix),
+        self.disparitynet_c = DisparityNetC(name_prefix='{}/c'.format(name_prefix),
                                             output_channels=2)
-        self.disparitynet_s = DisparityNetS(self.epochs,
-                                            name_prefix='{}/s'.format(name_prefix),
+        self.disparitynet_s = DisparityNetS(name_prefix='{}/s'.format(name_prefix),
                                             output_channels=output_channels)
 
     def model(self, *args, **kwargs):

@@ -4,10 +4,9 @@ from src.model import BaseNetwork
 
 class DisparityNetS(BaseNetwork):
 
-    def __init__(self, epochs=1, name_prefix='s', output_channels=1):
+    def __init__(self, name_prefix='s', output_channels=1):
         super(DisparityNetS, self).__init__()
         self.name = 'disparitynet_s'
-        self.epochs = epochs
         self.name_prefix = name_prefix
         self.output_channels = output_channels
 

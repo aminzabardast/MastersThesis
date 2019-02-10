@@ -5,10 +5,9 @@ from ..correlation import correlation_layer
 
 class DisparityNetC(BaseNetwork):
 
-    def __init__(self, epochs=1, name_prefix='c', output_channels=1):
+    def __init__(self, name_prefix='c', output_channels=1):
         super(DisparityNetC, self).__init__()
         self.name = 'disparitynet_c'
-        self.epochs = epochs
         self.name_prefix = name_prefix
         self.output_channels = output_channels
 

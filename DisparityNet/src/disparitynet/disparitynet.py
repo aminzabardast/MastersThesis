@@ -6,15 +6,12 @@ from ..disparitynet_css.disparitynet_css import DisparityNetCSS
 
 class DisparityNet(BaseNetwork):
 
-    def __init__(self, epochs=1):
+    def __init__(self,):
         super(DisparityNet, self).__init__()
         self.name = 'disparitynet'
-        self.epochs = epochs
-        self.disparitynet_css = DisparityNetCSS(epochs=epochs,
-                                                name_prefix='css',
+        self.disparitynet_css = DisparityNetCSS(name_prefix='css',
                                                 output_channels=2)
-        self.disparitynet_sd = DisparityNetSD(epochs=epochs,
-                                              name_prefix='sd',
+        self.disparitynet_sd = DisparityNetSD(name_prefix='sd',
                                               output_channels=2)
 
     def model(self, *args, **kwargs):
