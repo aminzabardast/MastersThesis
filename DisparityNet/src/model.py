@@ -1,11 +1,11 @@
 from tensorflow.keras.layers import Input
-from tensorflow.keras.models import Model, load_model, save_model
+from tensorflow.keras.models import Model, load_model
 from src.metrics import bad_4_0, bad_2_0, bad_1_0, bad_0_5
 from data_generator import other_parameters
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.optimizers import Adam
-from src.callbacks import EpochCSVLogger, BatchCSVLogger
-from tensorflow.keras.callbacks import TensorBoard, ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
+from src.callbacks import EpochCSVLogger
+from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
 from IO import read, write
 import matplotlib.pyplot as plt
 from os.path import isfile
@@ -17,21 +17,21 @@ DISPARITY_SHAPE = (512, 512)
 
 class BaseNetwork(object):
 
-    def __init__(self, name_prefix='b', output_channels=1):
-        self.name = 'base_network'
+    def __init__(self, code='base_network', name_prefix='b', output_channels=1):
+        self.code = code
         self.available_gpus = 2
         self.name_prefix = name_prefix
         self.output_channels = output_channels
 
-        # LEarning Rate
+        # Learning Rate
         self.lr = 10**-3
 
         # Callback Parameters
         self.monitor = 'val_bad_2_0'
-        self.min_delta = 0.1
-        self.reduction_patience = 2
-        self.reduction_factor = 0.5
-        self.termination_patience = 11
+        self.save_period = 5
+
+        # File Parameters
+        self.model_path = 'models/{}.keras'.format(self.code)
 
     def model(self, *args, **kwargs):
         """
@@ -44,7 +44,7 @@ class BaseNetwork(object):
         Accepts prediction Tensors from the output of `model`.
         Returns a single Tensor representing the total loss of the model.
         """
-        return 'mae'
+        return 'logcosh'
 
     def predict(self, input_a_path, input_b_path, out_path, png_path=''):
         """
@@ -52,7 +52,7 @@ class BaseNetwork(object):
         """
         left_img = read(input_a_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
         right_img = read(input_b_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
-        autoencoder = load_model('models/{}.keras'.format(self.name), compile=False)
+        autoencoder = load_model('models/{}.keras'.format(self.code), compile=False)
         optimizer = Adam()
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
         disparity = autoencoder.predict(x=[left_img, right_img]).reshape(DISPARITY_SHAPE)
@@ -60,13 +60,24 @@ class BaseNetwork(object):
         if png_path:
             plt.imsave('{}/result.png'.format(png_path), disparity, cmap='jet')
 
+    def _callbacks(self):
+        """
+        Generates the necessary callbacks
+        """
+        return [TensorBoard(log_dir='logs/{}/'.format(self.code), histogram_freq=0, write_graph=True,
+                            write_images=False, batch_size=other_parameters['batch_size']),
+                EpochCSVLogger(filename='csvs/{}.epoch.log.csv'.format(self.code), append=True),
+                ModelCheckpoint(filepath=self.model_path, monitor=self.monitor, mode='min', verbose=0, period=1,
+                                save_best_only=True),
+                ModelCheckpoint(filepath='models/'+self.code+'.e{epoch:02d}.keras', monitor=self.monitor, mode='min',
+                                verbose=0, period=self.save_period, save_best_only=False)]
+
     def train(self, training_generator, validation_generator, epochs=1, continue_training=True):
         """
         Training the model using two generators, one for training data and one for validation
         """
-        model_path = 'models/{}.keras'.format(self.name)
-        if continue_training and isfile(model_path):
-            autoencoder = load_model(model_path, compile=False)
+        if continue_training and isfile(self.model_path):
+            autoencoder = load_model(self.model_path, compile=False)
         else:
             left_input = Input(shape=(*other_parameters['dim'], other_parameters['input_channels']), name='left')
             right_input = Input(shape=(*other_parameters['dim'], other_parameters['input_channels']), name='right')
@@ -82,18 +93,4 @@ class BaseNetwork(object):
         autoencoder.fit_generator(generator=training_generator, validation_data=validation_generator,
                                   use_multiprocessing=False, validation_steps=len(validation_generator),
                                   workers=1, epochs=epochs, steps_per_epoch=len(training_generator),
-                                  callbacks=[TensorBoard(log_dir='logs/{}/'.format(self.name),
-                                                         histogram_freq=0, write_graph=True,
-                                                         write_images=False,
-                                                         batch_size=other_parameters['batch_size']),
-                                             EpochCSVLogger(filename='csvs/{}.epoch.log.csv'.format(self.name),
-                                                            append=True),
-                                             BatchCSVLogger(filename='csvs/{}.batch.log.csv'.format(self.name),
-                                                            append=True),
-                                             ReduceLROnPlateau(monitor=self.monitor, verbose=1, mode='min',
-                                                               factor=self.reduction_factor, min_delta=self.min_delta,
-                                                               patience=self.reduction_patience),
-                                             EarlyStopping(monitor=self.monitor, verbose=1, min_delta=self.min_delta,
-                                                           patience=self.termination_patience, mode='min'),
-                                             ModelCheckpoint(filepath=model_path, monitor=self.monitor, mode='min',
-                                                             verbose=0, period=1, save_best_only=True)])
+                                  callbacks=self._callbacks())
