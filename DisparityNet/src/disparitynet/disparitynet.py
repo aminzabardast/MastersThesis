@@ -6,15 +6,12 @@ from ..disparitynet_css.disparitynet_css import DisparityNetCSS
 
 class DisparityNet(BaseNetwork):
 
-    def __init__(self, epochs=1):
-        super(DisparityNet, self).__init__()
-        self.name = 'disparitynet'
-        self.epochs = epochs
-        self.disparitynet_css = DisparityNetCSS(epochs=epochs,
-                                                name_prefix='css',
+    def __init__(self, code='disparitynet'):
+        super(DisparityNet, self).__init__(code=code)
+
+        self.disparitynet_css = DisparityNetCSS(name_prefix='css',
                                                 output_channels=2)
-        self.disparitynet_sd = DisparityNetSD(epochs=epochs,
-                                              name_prefix='sd',
+        self.disparitynet_sd = DisparityNetSD(name_prefix='sd',
                                               output_channels=2)
 
     def model(self, *args, **kwargs):
@@ -47,6 +44,3 @@ class DisparityNet(BaseNetwork):
         pr0 = Conv2DTranspose(kernel_size=(3, 3), strides=1, filters=1, padding='same', activation='relu', name='{}/pr0'.format(self.name_prefix))(rconv0)
 
         return pr0
-
-    def loss(self, *args, **kwargs):
-        return 'logcosh'

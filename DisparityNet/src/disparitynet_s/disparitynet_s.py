@@ -4,10 +4,8 @@ from src.model import BaseNetwork
 
 class DisparityNetS(BaseNetwork):
 
-    def __init__(self, epochs=1, name_prefix='s', output_channels=1):
-        super(DisparityNetS, self).__init__()
-        self.name = 'disparitynet_s'
-        self.epochs = epochs
+    def __init__(self, code='disparitynet_s', name_prefix='s', output_channels=1):
+        super(DisparityNetS, self).__init__(code=code)
         self.name_prefix = name_prefix
         self.output_channels = output_channels
 
@@ -61,6 +59,3 @@ class DisparityNetS(BaseNetwork):
 
         pr1 = Conv2DTranspose(filters=self.output_channels, kernel_size=(5, 5), strides=2, padding='same', activation='relu', name='{}/pr_1'.format(self.name_prefix))(rconv1)  # Resulting Dimensions: 512x512x16
         return pr1
-
-    def loss(self, *args, **kwargs):
-        return 'logcosh'

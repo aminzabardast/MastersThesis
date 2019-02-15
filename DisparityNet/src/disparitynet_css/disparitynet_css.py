@@ -6,18 +6,13 @@ from ..flow_warp import warp_layer
 
 class DisparityNetCSS(BaseNetwork):
 
-    def __init__(self, epochs=1, name_prefix='css', output_channels=1):
-        super(DisparityNetCSS, self).__init__()
-        self.name = 'disparitynet_css'
-        self.epochs = epochs
-        self.disparitynet_c = DisparityNetC(self.epochs,
-                                            name_prefix='{}/c'.format(name_prefix),
+    def __init__(self, code='disparitynet_css', name_prefix='css', output_channels=1):
+        super(DisparityNetCSS, self).__init__(code=code)
+        self.disparitynet_c = DisparityNetC(name_prefix='{}/c'.format(name_prefix),
                                             output_channels=2)
-        self.disparitynet_s1 = DisparityNetS(self.epochs,
-                                             name_prefix='{}/s1'.format(name_prefix),
+        self.disparitynet_s1 = DisparityNetS(name_prefix='{}/s1'.format(name_prefix),
                                              output_channels=2)
-        self.disparitynet_s2 = DisparityNetS(self.epochs,
-                                             name_prefix='{}/s2'.format(name_prefix),
+        self.disparitynet_s2 = DisparityNetS(name_prefix='{}/s2'.format(name_prefix),
                                              output_channels=output_channels)
 
     def model(self, *args, **kwargs):
@@ -35,6 +30,3 @@ class DisparityNetCSS(BaseNetwork):
                                                   disparity=disparity_s1,
                                                   right_input=kwargs['right_input'])
         return disparity_s2
-
-    def loss(self, *args, **kwargs):
-        return 'logcosh'

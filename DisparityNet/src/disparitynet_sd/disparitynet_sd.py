@@ -4,10 +4,8 @@ from tensorflow.keras.layers import Conv2D, concatenate, Conv2DTranspose
 
 class DisparityNetSD(BaseNetwork):
 
-    def __init__(self, epochs=1, name_prefix='sd', output_channels=1):
-        super(DisparityNetSD, self).__init__()
-        self.name = 'disparitynet_sd'
-        self.epochs = epochs
+    def __init__(self, code='disparitynet_sd', name_prefix='sd', output_channels=1):
+        super(DisparityNetSD, self).__init__(code=code)
         self.name_prefix = name_prefix
         self.output_channels = output_channels
 
@@ -63,6 +61,3 @@ class DisparityNetSD(BaseNetwork):
         pr1 = Conv2DTranspose(kernel_size=(3, 3), strides=2, filters=self.output_channels, padding='same', activation='relu', name='{}/pr_1'.format(self.name_prefix))(rconv1)
 
         return pr1
-
-    def loss(self, *args, **kwargs):
-        return 'logcosh'
