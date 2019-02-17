@@ -8,7 +8,7 @@ from src.callbacks import EpochCSVLogger
 from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
 from IO import read, write
 import matplotlib.pyplot as plt
-from os.path import isfile
+from os.path import isfile, join
 
 
 INPUT_SHAPE = (1, 512, 512, 3)
@@ -31,7 +31,7 @@ class BaseNetwork(object):
         self.save_period = 5
 
         # File Parameters
-        self.model_path = 'models/{}.keras'.format(self.code)
+        self.model_dir = 'models/{}/'.format(self.code)
 
     def model(self, *args, **kwargs):
         """
@@ -52,32 +52,32 @@ class BaseNetwork(object):
         """
         left_img = read(input_a_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
         right_img = read(input_b_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
-        autoencoder = load_model('models/{}.keras'.format(self.code), compile=False)
+        autoencoder = load_model(join(self.model_dir, 'model.keras'), compile=False)
         optimizer = Adam()
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
         disparity = autoencoder.predict(x=[left_img, right_img]).reshape(DISPARITY_SHAPE)
-        write('{}/result.pfm'.format(out_path), disparity)
+        write('{}/{}.result.pfm'.format(out_path, self.code), disparity)
         if png_path:
-            plt.imsave('{}/result.png'.format(png_path), disparity, cmap='jet')
+            plt.imsave('{}/{}.result.png'.format(png_path, self.code), disparity, cmap='jet')
 
     def _callbacks(self):
         """
         Generates the necessary callbacks
         """
-        return [TensorBoard(log_dir='logs/{}/'.format(self.code), histogram_freq=0, write_graph=True,
+        return [TensorBoard(log_dir='models/{}/logs/'.format(self.code), histogram_freq=0, write_graph=True,
                             write_images=False, batch_size=other_parameters['batch_size']),
-                EpochCSVLogger(filename='csvs/{}.epoch.log.csv'.format(self.code), append=True),
-                ModelCheckpoint(filepath=self.model_path, monitor=self.monitor, mode='min', verbose=0, period=1,
-                                save_best_only=True),
-                ModelCheckpoint(filepath='models/'+self.code+'.e{epoch:02d}.keras', monitor=self.monitor, mode='min',
-                                verbose=0, period=self.save_period, save_best_only=False)]
+                EpochCSVLogger(csv_dir='models/{}/csvs/'.format(self.code), append=True),
+                ModelCheckpoint(filepath=join(self.model_dir, 'model.keras'), monitor=self.monitor, mode='min',
+                                verbose=0, period=1, save_best_only=True),
+                ModelCheckpoint(filepath=join(self.model_dir, 'model.e{epoch:02d}.keras'), monitor=self.monitor,
+                                mode='min', verbose=0, period=self.save_period, save_best_only=False)]
 
     def train(self, training_generator, validation_generator, epochs=1, continue_training=True):
         """
         Training the model using two generators, one for training data and one for validation
         """
-        if continue_training and isfile(self.model_path):
-            autoencoder = load_model(self.model_path, compile=False)
+        if continue_training and isfile(join(self.model_dir, 'model.keras')):
+            autoencoder = load_model(join(self.model_dir, 'model.keras'), compile=False)
         else:
             left_input = Input(shape=(*other_parameters['dim'], other_parameters['input_channels']), name='left')
             right_input = Input(shape=(*other_parameters['dim'], other_parameters['input_channels']), name='right')

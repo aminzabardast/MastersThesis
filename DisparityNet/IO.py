@@ -20,6 +20,7 @@ def read(file):
     elif file.lower().endswith('.pfm'): return readPFM(file)[0]
     else: raise Exception('don\'t know how to read %s' % file)
 
+
 def write(file, data):
     if file.lower().endswith('.float3'): return writeFloat(file, data)
     elif file.lower().endswith('.flo'): return writeFlow(file, data)
@@ -29,6 +30,7 @@ def write(file, data):
     elif file.lower().endswith('.jpg'): return writeImage(file, data)
     elif file.lower().endswith('.pfm'): return writePFM(file, data)
     else: raise Exception('don\'t know how to write %s' % file)
+
 
 def readPFM(file):
     file = open(file, 'rb')
@@ -67,6 +69,7 @@ def readPFM(file):
     data = np.flipud(data)
     return data, scale
 
+
 def writePFM(file, image, scale=1):
     file = open(file, 'wb')
 
@@ -96,6 +99,7 @@ def writePFM(file, image, scale=1):
 
     image.tofile(file)
 
+
 def readFlow(name):
     if name.endswith('.pfm') or name.endswith('.PFM'):
         return readPFM(name)[0][:,:,0:2]
@@ -113,6 +117,7 @@ def readFlow(name):
 
     return flow.astype(np.float32)
 
+
 def readImage(name):
     if name.endswith('.pfm') or name.endswith('.PFM'):
         data = readPFM(name)[0]
@@ -123,11 +128,13 @@ def readImage(name):
 
     return misc.imread(name)
 
+
 def writeImage(name, data):
     if name.endswith('.pfm') or name.endswith('.PFM'):
         return writePFM(name, data, 1)
 
     return misc.imsave(name, data)
+
 
 def writeFlow(name, flow):
     f = open(name, 'wb')
@@ -135,6 +142,7 @@ def writeFlow(name, flow):
     np.array([flow.shape[1], flow.shape[0]], dtype=np.int32).tofile(f)
     flow = flow.astype(np.float32)
     flow.tofile(f)
+
 
 def readFloat(name):
     f = open(name, 'rb')
@@ -159,6 +167,7 @@ def readFloat(name):
         data = np.transpose(data, (1, 0, 2))
 
     return data
+
 
 def writeFloat(name, data):
     f = open(name, 'wb')
