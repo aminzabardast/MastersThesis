@@ -46,19 +46,31 @@ class BaseNetwork(object):
         """
         return 'logcosh'
 
-    def predict(self, input_a_path, input_b_path, out_path, png_path=''):
+    def predict(self, input_a_path, input_b_path, out_path, png_path='', epoch=''):
         """
         Predicting the disparity map from two input images in the size of 512x512
         """
+        # TODO: Divide Pictures into bunches to support different resolutions
         left_img = read(input_a_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
         right_img = read(input_b_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
-        autoencoder = load_model(join(self.model_dir, 'model.keras'), compile=False)
+        if epoch:
+            epoch = '.e{}'.format(epoch)
+        autoencoder = load_model(join(self.model_dir, 'model{}.keras'.format(epoch)), compile=False)
         optimizer = Adam()
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
         disparity = autoencoder.predict(x=[left_img, right_img]).reshape(DISPARITY_SHAPE)
         write('{}/{}.result.pfm'.format(out_path, self.code), disparity)
         if png_path:
             plt.imsave('{}/{}.result.png'.format(png_path, self.code), disparity, cmap='jet')
+
+    def predict_generator(self, validation_generator, epoch=''):
+        autoencoder = load_model(join(self.model_dir, 'model.keras'.format(epoch)), compile=False)
+        optimizer = Adam()
+        if self.available_gpus > 1:
+            autoencoder = multi_gpu_model(model=autoencoder, gpus=self.available_gpus)
+        autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
+        return autoencoder.predict_generator(generator=validation_generator, workers=1,
+                                             steps=len(validation_generator))
 
     def _callbacks(self):
         """
