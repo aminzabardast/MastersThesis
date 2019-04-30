@@ -22,3 +22,6 @@ Thumbs.db
 #############
 __pycache__
 
+# Jupyter Notebook Stuff #
+##########################
+.ipynb_checkpoints
