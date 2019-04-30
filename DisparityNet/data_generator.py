@@ -130,16 +130,15 @@ other_parameters = {
     'batch_size': 5,
     'input_channels': 3,
     'output_channels': 1,
-    'shuffle': True
 }
 
 # Creating Generator for Flying Things 3D
-training_generator_ft3d = FlyingThings3D(data_list_ft3d['train'], **other_parameters)
-validation_generator_ft3d = FlyingThings3D(data_list_ft3d['validation'], **other_parameters)
+training_generator_ft3d = FlyingThings3D(data_list_ft3d['train'], shuffle=True, **other_parameters)
+validation_generator_ft3d = FlyingThings3D(data_list_ft3d['validation'], shuffle=False, **other_parameters)
 
 # Creating Generator for Sliding Organs 3D
-training_generator_st3d = SlidingTissues3D(data_list_st3d['train'], **other_parameters)
-validation_generator_st3d = SlidingTissues3D(data_list_st3d['validation'], **other_parameters)
+training_generator_st3d = SlidingTissues3D(data_list_st3d['train'], shuffle=True, **other_parameters)
+validation_generator_st3d = SlidingTissues3D(data_list_st3d['validation'], shuffle=False, **other_parameters)
 
 
 # Testing the Generator
