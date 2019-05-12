@@ -9,15 +9,20 @@ from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint
 from IO import read, write
 import matplotlib.pyplot as plt
 from os.path import isfile, join
+import numpy as np
 
 
-INPUT_SHAPE = (1, 512, 512, 3)
 DISPARITY_SHAPE = (512, 512)
 
 
 class BaseNetwork(object):
 
     def __init__(self, code='base_network', name_prefix='b', output_channels=1):
+        """
+        :param code: A code name for the network
+        :param name_prefix: A name prefix to distinguish layers of the network.
+        :param output_channels: Channels of the output image
+        """
         self.code = code
         self.available_gpus = 2
         self.name_prefix = name_prefix
@@ -33,6 +38,11 @@ class BaseNetwork(object):
         # File Parameters
         self.model_dir = 'models/{}/'.format(self.code)
 
+        # Image Fragmentation
+        self.divisions = (5, 3)
+        self.num_of_layers = None
+        self.stacked_images = []
+
     def model(self, *args, **kwargs):
         """
         Defines the model and returns a tuple of Tensors needed for calculating the loss.
@@ -46,19 +56,93 @@ class BaseNetwork(object):
         """
         return 'logcosh'
 
-    def predict(self, input_a_path, input_b_path, out_path, png_path='', epoch=''):
+    def _calculate_cuts(self, image):
         """
-        Predicting the disparity map from two input images in the size of 512x512
+        Calculates the instructions for the cuts.
+        :param image: An image larger than or equal to (512, 512, [channels]) in spacial dimensions
+        :return: None
         """
-        # TODO: Divide Pictures into bunches to support different resolutions
-        left_img = read(input_a_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
-        right_img = read(input_b_path)[:512, :512, 0:3].reshape(INPUT_SHAPE)
+        extended_width = image.shape[1] - 512
+        extended_height = image.shape[0] - 512
+
+        if extended_width % (self.divisions[0] - 1) == 0 and extended_height % (self.divisions[1] - 1) == 0:
+            width_jump = extended_width // (self.divisions[0] - 1)
+            height_jump = extended_height // (self.divisions[1] - 1)
+        else:
+            raise ValueError('Not Dividable!')
+
+        horizontal_cuts = [(0 + i * width_jump, 512 + i * width_jump) for i in range(0, self.divisions[0])]
+        vertical_cuts = [(0 + i * height_jump, 512 + i * height_jump) for i in range(0, self.divisions[1])]
+
+        cuts = []
+        for i in horizontal_cuts:
+            for j in vertical_cuts:
+                cuts.append((j, i))
+
+        self.cuts = cuts
+
+    def _fragment_image(self, image):
+        """
+        Stacking the image into (512, 512) fragments.
+        :param image: An image larger than or equal to (512, 512, [channels]) in spacial dimensions
+        :return: stacked images in shape of ([number of cuts], 512, 512, [channels])
+        """
+        self.num_of_layers = np.zeros(shape=(image.shape[0], image.shape[1]))
+        stacked_images = []
+
+        for c in self.cuts:
+            chunk = image[c[0][0]:c[0][1], c[1][0]:c[1][1]]
+            stacked_images.append(chunk)
+            self.num_of_layers[c[0][0]:c[0][1], c[1][0]:c[1][1]] += 1
+
+        return np.array(stacked_images)
+
+    def _reconnect_disparity(self, disparities):
+        """
+        Recreates original size disparity map
+        :param disparities: network result in the shape of ([number_of_cuts] ,512, 512, 1)
+        :return: A disparity in the shape of ([width], [height], 1) where the width and height are the same as input
+        image.
+        """
+        shape = disparities.shape
+        disparities = disparities.reshape(shape[0:-1])
+
+        recreated_image = np.zeros(shape=self.num_of_layers.shape)
+
+        for idx, c in enumerate(self.cuts):
+            recreated_image[c[0][0]:c[0][1], c[1][0]:c[1][1]] += disparities[idx]
+
+        return np.float32(np.divide(recreated_image, self.num_of_layers))
+
+    def predict(self, input_a_path, input_b_path, out_path, png_path='', fragment=True, epoch=''):
+        """
+        Predicting the disparity map from two input images
+        :param input_a_path: path to left image
+        :param input_b_path: path to right image
+        :param out_path: the directory of PFM output
+        :param png_path: the directory of PNG output
+        :param fragment: Fragmenting the image  to fit into the network
+        :param epoch: use model at a certain epoch
+        :return: None
+        """
+        left_img = plt.imread(input_a_path)[:, :, 0:3]
+        right_img = plt.imread(input_b_path)[:, :, 0:3]
+
+        if fragment:
+            self._calculate_cuts(left_img)
+            left_img = self._fragment_image(left_img)
+            right_img = self._fragment_image(right_img)
+        else:
+            left_img = left_img.reshape(shape=(1, *left_img.shape))
+            right_img = right_img.reshape(shape=(1, *right_img.shape))
+
         if epoch:
             epoch = '.e{}'.format(epoch)
         autoencoder = load_model(join(self.model_dir, 'model{}.keras'.format(epoch)), compile=False)
         optimizer = Adam()
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
-        disparity = autoencoder.predict(x=[left_img, right_img]).reshape(DISPARITY_SHAPE)
+        disparity = autoencoder.predict(x=[left_img, right_img])
+        disparity = self._reconnect_disparity(disparities=disparity)
         write('{}/{}.result.pfm'.format(out_path, self.code), disparity)
         if png_path:
             plt.imsave('{}/{}.result.png'.format(png_path, self.code), disparity, cmap='jet')
@@ -75,6 +159,7 @@ class BaseNetwork(object):
     def _callbacks(self):
         """
         Generates the necessary callbacks
+        :return: A list of necessary callbacks
         """
         return [TensorBoard(log_dir='models/{}/logs/'.format(self.code), histogram_freq=0, write_graph=True,
                             write_images=False, batch_size=other_parameters['batch_size']),
@@ -87,6 +172,11 @@ class BaseNetwork(object):
     def train(self, training_generator, validation_generator, epochs=1, continue_training=True):
         """
         Training the model using two generators, one for training data and one for validation
+        :param training_generator: a generator feeding patches of images for training
+        :param validation_generator: a generator feeding patches of images for validation
+        :param epochs: number of epochs to train
+        :param continue_training: continue the training from the last time
+        :return: None
         """
         if continue_training and isfile(join(self.model_dir, 'model.keras')):
             autoencoder = load_model(join(self.model_dir, 'model.keras'), compile=False)
