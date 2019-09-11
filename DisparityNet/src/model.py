@@ -29,7 +29,7 @@ class BaseNetwork(object):
         self.output_channels = output_channels
 
         # Learning Rate
-        self.lr = 10**-3
+        self.lr = (10**-4)
 
         # Callback Parameters
         self.monitor = 'val_bad_2_0'
