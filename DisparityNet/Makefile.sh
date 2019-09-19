@@ -6,7 +6,6 @@ TF_LIB = `python -c "import tensorflow; print(tensorflow.sysconfig.get_lib())"`
 ifndef CUDA_HOME
     CUDA_HOME := /usr/local/cuda
 endif
-CUDA_HOME := /usr/local/cuda-9.0
 
 CC        = gcc -O2 -pthread
 CXX       = g++
