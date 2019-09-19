@@ -60,7 +60,7 @@ class FlyingThings3D(keras.utils.Sequence):
         return '< FlyingThings3D with {} data points >'.format(len(self.data_list))
 
 
-class SlidingTissues3D(keras.utils.Sequence):
+class MISView3D(keras.utils.Sequence):
     def __init__(self, data_list, batch_size=32, dim=(512, 512), input_channels=3, output_channels=1, shuffle=True):
         """Initializations"""
         self.dim = dim
@@ -70,8 +70,8 @@ class SlidingTissues3D(keras.utils.Sequence):
         self.output_channels = output_channels
         self.shuffle = shuffle
         self.indexes = np.arange(len(self.data_list))
-        self.data_dir = 'data/sliding_tissues_3d/'  # Insert path to frames
-        self.disparity_dir = 'data/sliding_tissues_3d/'  # Insert path to disparity
+        self.data_dir = 'data/mis_view_3d/'  # Insert path to frames
+        self.disparity_dir = 'data/mis_view_3d/'  # Insert path to disparity
 
     def on_epoch_end(self):
         """Update indexes after each epoch"""
@@ -113,7 +113,7 @@ class SlidingTissues3D(keras.utils.Sequence):
         return [left, right], disparity
 
     def __repr__(self):
-        return '< SlidingOrgans3D with {} data points >'.format(len(self.data_list))
+        return '< MISView3D with {} data points >'.format(len(self.data_list))
 
 
 # Loading list of data from JSON file
@@ -121,8 +121,8 @@ with open('data/flying_things_3d/output.json', 'r') as f:
     data_list_ft3d = json.load(f)
 
 # Loading list of data from JSON file
-with open('data/sliding_tissues_3d/output.json', 'r') as f:
-    data_list_st3d = json.load(f)
+with open('data/mis_view_3d/output.json', 'r') as f:
+    data_list_misv3d = json.load(f)
 
 # Parameters required by Generators
 other_parameters = {
@@ -137,14 +137,14 @@ training_generator_ft3d = FlyingThings3D(data_list_ft3d['train'], shuffle=True, 
 validation_generator_ft3d = FlyingThings3D(data_list_ft3d['validation'], shuffle=False, **other_parameters)
 
 # Creating Generator for Sliding Organs 3D
-training_generator_st3d = SlidingTissues3D(data_list_st3d['train'], shuffle=True, **other_parameters)
-validation_generator_st3d = SlidingTissues3D(data_list_st3d['validation'], shuffle=False, **other_parameters)
+training_generator_misv3d = MISView3D(data_list_misv3d['train'], shuffle=True, **other_parameters)
+validation_generator_misv3d = MISView3D(data_list_misv3d['validation'], shuffle=False, **other_parameters)
 
 
 # Testing the Generator
 if __name__ == '__main__':
-    print(training_generator_st3d)
-    for epoch, data in enumerate(training_generator_st3d):
+    print(training_generator_misv3d)
+    for epoch, data in enumerate(training_generator_misv3d):
         print('Left:\t\t'+str(data[0][0].shape))
         print('Right:\t\t'+str(data[0][1].shape))
         print('Disparity:\t'+str(data[1].shape), end='\n\n')
