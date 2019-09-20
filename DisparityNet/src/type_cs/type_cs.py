@@ -22,4 +22,4 @@ class TypeCS(BaseNetwork):
                                                 warped_left_input=warped_left_input_c,
                                                 disparity=type_c,
                                                 right_input=kwargs['right_input'])
-        return disparity_s
+        return type_s
