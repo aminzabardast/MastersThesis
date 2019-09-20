@@ -1,5 +1,5 @@
-from data_generator import validation_generator_st3d, data_list_st3d
-from .disparitynet_c import DisparityNetC
+from data_generator import validation_generator_misv3d, data_list_misv3d
+from .type_c import TypeC
 from IO import write
 import matplotlib.pyplot as plt
 
@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 def main():
     # Create a new network
     code = 'dn_c_st3d_1'
-    net = DisparityNetC(code=code)
-    predictions = net.predict_generator(validation_generator=validation_generator_st3d)
+    net = TypeC(code=code)
+    predictions = net.predict_generator(validation_generator=validation_generator_misv3d)
 
     path = 'data/sliding_tissues_3d/'
 
-    for index, item in enumerate(data_list_st3d['validation']):
+    for index, item in enumerate(data_list_misv3d['validation']):
         try:
             print(path+item['left'][0:21]+code+'.pfm')
             write(path+item['left'][0:21]+code+'.pfm', predictions[index].reshape(512, 512))

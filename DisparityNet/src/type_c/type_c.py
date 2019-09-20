@@ -3,10 +3,10 @@ from src.model import BaseNetwork
 from ..correlation import correlation_layer
 
 
-class DisparityNetC(BaseNetwork):
+class TypeC(BaseNetwork):
 
     def __init__(self, code='disparitynet_c', name_prefix='c', output_channels=1):
-        super(DisparityNetC, self).__init__(code=code)
+        super(TypeC, self).__init__(code=code)
         self.name_prefix = name_prefix
         self.output_channels = output_channels
 
