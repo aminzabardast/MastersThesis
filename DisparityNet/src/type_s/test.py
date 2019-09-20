@@ -1,11 +1,11 @@
 import argparse
 import os
-from .disparitynet_s import DisparityNetS
+from .type_s import TypeS
 
 
 def main():
     # Create a new network
-    net = DisparityNetS()
+    net = TypeS()
 
     # Train on the data
     net.predict(

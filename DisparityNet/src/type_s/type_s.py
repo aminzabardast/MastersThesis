@@ -2,10 +2,10 @@ from tensorflow.keras.layers import Conv2D, concatenate, Conv2DTranspose
 from src.model import BaseNetwork
 
 
-class DisparityNetS(BaseNetwork):
+class TypeS(BaseNetwork):
 
     def __init__(self, code='disparitynet_s', name_prefix='s', output_channels=1):
-        super(DisparityNetS, self).__init__(code=code)
+        super(TypeS, self).__init__(code=code)
         self.name_prefix = name_prefix
         self.output_channels = output_channels
 
