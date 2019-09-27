@@ -29,7 +29,7 @@ class TypeS(BaseNetwork):
         conv5_1 = Conv2D(kernel_size=(3, 3), strides=2, filters=512, padding='same', activation='relu', name='{}/conv_5_1'.format(self.name_prefix))(conv4_2)  # Resulting Dimensions: 16x16x512
         conv5_2 = Conv2D(kernel_size=(3, 3), strides=1, filters=512, padding='same', activation='relu', name='{}/conv_5_2'.format(self.name_prefix))(conv5_1)  # Resulting Dimensions: 16s16x512
 
-        conv6 = Conv2D(kernel_size=(3, 3), strides=2, filters=1024, padding='same', activation='relu', name='{}/conv_6'.format(self.name_prefix))(conv5_2)  # Resulting Dimensions: 8x8x1024
+        conv6 = Conv2D(kernel_size=(3, 3), strides=2, filters=1024, padding='same', activation='relu', name='{}/conv_6'.format(self.name_prefix))(conv5_2)  # Resulting Dimensions: 8x8x1024 / Bottleneck
 
         pr6 = Conv2DTranspose(kernel_size=(3, 3), strides=2, filters=self.output_channels, padding='same', activation='relu', name='{}/pr_6'.format(self.name_prefix))(conv6)
 
