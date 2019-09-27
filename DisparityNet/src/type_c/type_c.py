@@ -5,7 +5,7 @@ from ..correlation import correlation_layer
 
 class TypeC(BaseNetwork):
 
-    def __init__(self, code='disparitynet_c', name_prefix='c', output_channels=1):
+    def __init__(self, code='type_c', name_prefix='c', output_channels=1):
         super(TypeC, self).__init__(code=code)
         self.name_prefix = name_prefix
         self.output_channels = output_channels

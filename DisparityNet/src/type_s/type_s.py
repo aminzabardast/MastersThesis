@@ -4,7 +4,7 @@ from src.model import BaseNetwork
 
 class TypeS(BaseNetwork):
 
-    def __init__(self, code='disparitynet_s', name_prefix='s', output_channels=1):
+    def __init__(self, code='type_s', name_prefix='s', output_channels=1):
         super(TypeS, self).__init__(code=code)
         self.name_prefix = name_prefix
         self.output_channels = output_channels

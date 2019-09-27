@@ -6,7 +6,7 @@ from ..flow_warp import warp_layer
 
 class TypeCS(BaseNetwork):
 
-    def __init__(self, code='disparitynet_cs', name_prefix='cs', output_channels=1):
+    def __init__(self, code='type_cs', name_prefix='cs', output_channels=1):
         super(TypeCS, self).__init__(code=code)
         self.type_c = TypeC(name_prefix='{}/c'.format(name_prefix),
                                             output_channels=2)
