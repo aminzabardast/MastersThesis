@@ -138,14 +138,15 @@ class BaseNetwork(object):
 
         if epoch:
             epoch = '.e{}'.format(epoch)
+        print(epoch)
         autoencoder = load_model(join(self.model_dir, 'model{}.keras'.format(epoch)), compile=False)
         optimizer = Adam()
         autoencoder.compile(optimizer=optimizer, loss=self.loss(), metrics=[bad_4_0, bad_2_0, bad_1_0, bad_0_5])
         disparity = autoencoder.predict(x=[left_img, right_img])
         disparity = self._reconnect_disparity(disparities=disparity)
-        write('{}/{}.result.pfm'.format(out_path, self.code), disparity)
+        write('{}{}{}.result.pfm'.format(out_path, self.code, epoch), disparity)
         if png_path:
-            plt.imsave('{}/{}.result.png'.format(png_path, self.code), disparity, cmap='jet')
+            plt.imsave('{}{}{}.result.png'.format(png_path, self.code, epoch), disparity, cmap='jet')
 
     def predict_generator(self, validation_generator, epoch=''):
         autoencoder = load_model(join(self.model_dir, 'model.keras'.format(epoch)), compile=False)

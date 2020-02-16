@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 networks = [
-    [(16, 256), (32, 128), (64, 64), (128, 32), (256, 16), (512, 8)]
+    [(8, 256, 4), (32, 128, 3), (128, 64, 2), (512, 32, 1), (2048, 16, 1)]
 ]
 
 for idx, network in enumerate(networks):
@@ -18,6 +18,6 @@ for idx, network in enumerate(networks):
     net.train(
         training_generator=training_generator_misv3d,
         validation_generator=validation_generator_misv3d,
-        epochs=100,
+        epochs=50,
         continue_training=True
     )

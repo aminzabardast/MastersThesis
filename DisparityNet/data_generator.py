@@ -14,7 +14,7 @@ class FlyingThings3D(keras.utils.Sequence):
         self.output_channels = output_channels
         self.shuffle = shuffle
         self.indexes = np.arange(len(self.data_list))
-        self.data_dir = 'data/flying_things_3d/frames_finalpass/'  # Insert path to frames_finalpass
+        self.data_dir = 'data/flying_things_3d/frames_cleanpass/'  # Insert path to frames_cleanpass
         self.disparity_dir = 'data/flying_things_3d/disparity/'  # Insert path to disparity
 
     def on_epoch_end(self):
@@ -34,8 +34,8 @@ class FlyingThings3D(keras.utils.Sequence):
             right_img = imgs['right']
             disparity_map = str(left_img).replace('png', 'pfm')
 
-            left[i, ] = read(self.data_dir+left_img)[:self.dim[0], :self.dim[1], :-1]
-            right[i, ] = read(self.data_dir+right_img)[:self.dim[0], :self.dim[1], :-1]
+            left[i, ] = read(self.data_dir+left_img)[:self.dim[0], :self.dim[1]]
+            right[i, ] = read(self.data_dir+right_img)[:self.dim[0], :self.dim[1]]
             disparity[i, ] = read(self.disparity_dir+disparity_map)[:self.dim[0], :self.dim[1]].reshape((*self.dim, self.output_channels))
 
         return left, right, disparity
@@ -127,7 +127,7 @@ with open('data/mis_view_3d/output.json', 'r') as f:
 # Parameters required by Generators
 other_parameters = {
     'dim': (512, 512),
-    'batch_size': 5,
+    'batch_size': 10,
     'input_channels': 3,
     'output_channels': 1,
 }

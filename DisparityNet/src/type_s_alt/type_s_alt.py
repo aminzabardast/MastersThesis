@@ -7,6 +7,7 @@ class TypeSAlt(BaseNetwork):
 
     def __init__(self, code='type_s_alt', name_prefix='s'):
         super(TypeSAlt, self).__init__(code=code)
+        self.lr = (10 ** -5)
         self.name_prefix = name_prefix
         self._internal_model = []
         self._network_shape = None
@@ -17,16 +18,18 @@ class TypeSAlt(BaseNetwork):
     def _init_images(self, inputs):
         self._internal_model.append(concatenate(inputs=[inputs['left_input'], inputs['right_input']]))
 
-    def _conv_layer(self, filters, output_res):
+    def _conv_layer(self, filters, output_res, repeat):
         input_res = int(self._internal_model[-1].shape[1])
         strides = input_res // output_res
-        self._internal_model.append(
-            Conv2D(kernel_size=(3, 3),
-                   strides=strides,
-                   filters=filters if filters > 8 else 8,
-                   padding='same',
-                   activation='relu')(self._internal_model[-1])
-        )
+        for i in range(repeat):
+            strides = input_res // output_res if repeat == i+1 else 1
+            self._internal_model.append(
+                Conv2D(kernel_size=(3, 3),
+                       strides=strides,
+                       filters=filters,
+                       padding='same',
+                       activation='relu')(self._internal_model[-1])
+            )
 
     def _output(self):
         self._internal_model.append(
@@ -73,9 +76,10 @@ class TypeSAlt(BaseNetwork):
 
     def model(self, *args, **kwargs):
         self._init_images(kwargs)
-        for filters, result_spatial_res in self._network_shape:
-            self._conv_layer(filters, result_spatial_res)
+        for filters, result_spatial_res, repeat in self._network_shape:
+            self._conv_layer(filters, result_spatial_res, repeat)
         for _ in self._transpose_layer_repeats():
             self._transpose_conv_layer()
         self._output()
+        pprint(self._internal_model)
         return self._internal_model[-1]
