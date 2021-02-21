@@ -5,7 +5,7 @@ To create all the operations run `make all`.
 No matter where the cuda is installed, there should be a simlink to its directory at `/usr/local/cuda`.
 If not, just modify this to point to its address.
 
-The code shall be run with Python virtualenv activated and all the necessary packages (within `requirements.txt`) should be installed.
+The code should run with Python virtualenv activated and all the necessary packages (within `requirements.txt`) should be installed.
 
 The operation libraries are successfully compiled on:
 * `Python 3.6.4`
@@ -21,7 +21,7 @@ Downlaod the cuda from [Nvidia's Page](https://developer.nvidia.com/cuda-90-down
 run the following commend
 ```shell script
 $ chmod u+x cuda_9.0.176_384.81_linux-run
-$ ./cuda_9.0.176_384.81_linux-run
+$ ./cuda_9.0.176_384.81_linux-run --toolkitpath=$HOME/.local/cuda-9.0
 ```
 
 Follow the instructions.
