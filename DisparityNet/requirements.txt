@@ -1,0 +1,8 @@
+tensorflow-gpu==1.10
+tensorflow==1.10
+scipy==1.0.1
+numpy==1.14.5
+h5py==2.7.1
+pillow==5.1.0
+matplotlib==2.2.3
+setuptools==39.1.0

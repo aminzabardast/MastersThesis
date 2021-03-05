@@ -17,3 +17,11 @@ Thumbs.db
 # JetBrains #
 #############
 .idea
+
+# PIP Stuff #
+#############
+__pycache__
+
+# Jupyter Notebook Stuff #
+##########################
+.ipynb_checkpoints
