@@ -1,4 +1,4 @@
-tensorflow-gpu==1.10
+tensorflow-gpu==2.5.1
 tensorflow==1.10
 scipy==1.0.1
 numpy==1.14.5
